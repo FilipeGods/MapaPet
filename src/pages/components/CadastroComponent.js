@@ -1,11 +1,13 @@
 import React, { Component, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import api from '../../services/api';
 
 //COMPONENTS
 import MaterialUnderlineTextbox2 from "./aux-components/CadastroScreen/MaterialUnderlineTextbox2";
 import MaterialButtonViolet1 from "./aux-components/CadastroScreen/MaterialButtonViolet1";
 import MaterialButtonWithVioletText1 from "./aux-components/CadastroScreen/MaterialButtonWithVioletText1";
+import MaterialRightIconTextbox1 from "./aux-components/CadastroScreen/MaterialRightIconTextbox1"; 
 
 function CadastroComponent(props) {
 
@@ -27,10 +29,12 @@ function CadastroComponent(props) {
         console.log('chamei o cadastro');
             api.post('users', {
                 name,
+                cellphone,
                 email,
                 password
             }).then(() => {
                 alert('Cadastro realizado com sucesso!');
+                navigation.navigate('login')
             }).catch(() => {
                 alert('Erro no cadastro');
             });
@@ -60,16 +64,16 @@ function CadastroComponent(props) {
           inputStyle="Email"
           style={styles.inputEmail}
         ></MaterialUnderlineTextbox2>
-        <MaterialUnderlineTextbox2
+        <MaterialRightIconTextbox1
           onChangeText={(password) => setPassword(password)}
           value={password}
-          inputStyle="Placeholder"
+          inputStyle="password"
           inputStyle="Senha"
           style={styles.inputSenha}
-        ></MaterialUnderlineTextbox2>
+        ></MaterialRightIconTextbox1>
         <View style={styles.buttonCadastrarRow}>
           <MaterialButtonViolet1
-            onPress={funcaoTeste}
+            onPress={handleCreateUser}
             caption="Cadastrar-se"
             style={styles.buttonCadastrar}
           ></MaterialButtonViolet1>

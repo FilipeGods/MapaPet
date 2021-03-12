@@ -1,13 +1,18 @@
 import React, { Component, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { createAppContainer } from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import api from '../../services/api';
 
+//import { LoginScreen, CadastroScreen } from '../components/aux-components/MenuEsquerda/itensMenuEsquerda'
+ 
 //COMPONENTS
 import MainHeader from '../components/MainHeader';
+import MenuHeader from '../components/MenuHeader'
 import CadastroComponent from '../components/CadastroComponent';
 
-export default function Cadastro() {
+export default function Cadastro() { 
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -29,11 +34,11 @@ async function handleCreateUser(e) {
 
     return (
         <View style={styles.container}>
-              <MainHeader 
-                title="Cadastro"
+              <MenuHeader 
+                title="MenuPrincipal"
                 style={styles.MainHeader}>
-              </MainHeader>
-              <CadastroComponent style={styles.cadastroComponent}></CadastroComponent>
+              </MenuHeader>
+              
         </View>
     );
 }

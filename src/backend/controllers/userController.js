@@ -32,13 +32,14 @@ module.exports = {
     async create (req, res) {
         console.log('==========================create============================');
         console.log(req.body);
-        const { name, email, password } = req.body;
+        const { name, cellphone, email, password } = req.body;
 
         const id_user = crypto.randomBytes(4).toString('HEX');
     
         await connection('users').insert({ //users aqui no parametro é a tabela do banco
             id_user,
             name,
+            cellphone,
             email, 
             password
         })

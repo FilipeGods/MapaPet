@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   title: {
-    fontFamily: "roboto-regular",
     color: "rgba(255,255,255,1)",
     fontSize: 26,
     marginTop: 40

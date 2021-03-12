@@ -5,8 +5,7 @@ import MapView from 'react-native-maps';
 import Mapa from './Mapa';
 
 export default function maps() {
-
     return(
-            <Mapa/>
+        <Mapa/>
     );
 }

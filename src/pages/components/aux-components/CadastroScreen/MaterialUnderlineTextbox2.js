@@ -8,6 +8,7 @@ function MaterialUnderlineTextbox2({onChangeText, ...props}) {
         onChangeText={onChangeText}
         placeholder={props.inputStyle || "Placeholder"}
         style={styles.inputStyle}
+        secureTextEntry={false}
       ></TextInput>
     </View>
   );
