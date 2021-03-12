@@ -1,10 +1,11 @@
 import React, { Component, useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 
 //COMPONENTS
 import MainHeader from '../components/MainHeader';
+import MenuHeader from '../components/MenuHeader';
 import CadastroComponent from '../components/CadastroComponent';
 
 export default function Cadastro() {
@@ -29,19 +30,15 @@ async function handleCreateUser(e) {
 
     return (
         <View style={styles.container}>
-              <MainHeader 
-                title="Cadastro"
-                style={styles.MainHeader}>
-              </MainHeader>
-              <CadastroComponent style={styles.cadastroComponent}></CadastroComponent>
+            <CadastroComponent style={styles.cadastroComponent}></CadastroComponent>
         </View>
     );
 }
 
+              
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        position: 'absolute',
         width: '100%',
         height: '100%'
     },

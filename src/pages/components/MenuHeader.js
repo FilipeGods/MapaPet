@@ -1,21 +1,18 @@
 import React, { Component } from "react";
-import { SafeAreaView, StyleSheet, View, Text,TouchableOpacity } from "react-native";
-import {FontAwesome5} from '@expo/vector-icons'
+import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { DrawerActions } from 'react-navigation-drawer'
 
-import { NavigationContainer} from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-
-import Login from '../homescreen/Login';
-
-const Drawer = createDrawerNavigator();
-
-function MenuHeader(props) {
+function MainHeader({ navigation }) {
+  //const DrawerActions = useDrawerActions();
   return (
-    <NavigationContainer>
-        <Drawer.Navigator>
-            <Drawer.Screen name="Home" component={Login} />
-        </Drawer.Navigator>
-    </NavigationContainer>
+    <View style={[styles.container, props.style]}>
+      <SafeAreaView style={styles.rect}>
+        <TouchableOpacity>
+          onPress={DrawerActions.openDrawer()}
+        </TouchableOpacity>
+        <Text style={styles.title}>{props.title}</Text>
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -44,4 +41,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MenuHeader;
+export default MainHeader;
