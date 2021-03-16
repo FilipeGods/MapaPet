@@ -31,7 +31,7 @@ function LoginComponent(props) {
             console.log('login sendo realizado')
             //res.data[0].id_user
             USUARIO.id_user = res.data[0].id_user;
-            navigation.navigate('menuPrincipal');
+            navigation.navigate('listaAnimais');
         }).catch((err) => {
             alert(err);
         });

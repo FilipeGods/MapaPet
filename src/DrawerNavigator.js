@@ -13,6 +13,7 @@ import index from './pages/maps/index';
 import login from './pages/homescreen/Login';
 import cadastro from './pages/homescreen/Cadastro';
 import menuPrincipal from './pages/homescreen/MenuPrincipal';
+import listaAnimais from './pages/homescreen/ListaAnimais';
 
 const Drawer = createDrawerNavigator();
 
@@ -47,6 +48,11 @@ const DrawerNavigator = () => {
         name="cadastro" 
         component={cadastro} 
         options={headerNoButton}/>
+      <Drawer.Screen 
+        name="listaAnimais"
+        component={listaAnimais}
+        options={headerListaAnimais}
+      />
     </Drawer.Navigator>
   );
 };
@@ -94,6 +100,19 @@ const headerLogin = {
   headerLeft: () => {},
   swipeEnabled: false,
   drawerLabel: 'Logout',
+  headerShown: true,
+  headerStyle: {backgroundColor: "rgba(94,53,177,1)", },
+  headerTitleStyle: {
+    color: "rgba(255,255,255,1)",
+    fontSize: 26,
+  },
+  headerTitleAlign: 'center',
+  headerTintColor: 'white'
+}
+
+const headerListaAnimais = {
+  drawerLabel: 'Listar Meus Animais',
+  title: 'Meus Animais',
   headerShown: true,
   headerStyle: {backgroundColor: "rgba(94,53,177,1)", },
   headerTitleStyle: {
