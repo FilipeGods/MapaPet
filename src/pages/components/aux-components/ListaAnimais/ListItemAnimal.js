@@ -1,13 +1,53 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, ImageBackground, Switch } from "react-native";
+import React, { Component, useState } from "react";
+import { 
+  StyleSheet, 
+  View, 
+  Text, 
+  ImageBackground, 
+  Switch, 
+  TouchableOpacity } from "react-native";
 import MaterialSwitch from "./MaterialSwitch";
 import CupertinoButtonInfo from "./CupertinoButtonInfo";
+import api from '../../../../services/api';
+
 
 const image = { uri: "https://reactjs.org/logo-og.png" };
 
 function ListItemAnimal({animal}, ...props) {
 
-  const [isEnabled, setIsEnabled] = useState(false);
+  let isAnimalPerdido = new Boolean(animal.isPerdido);
+  const [isEnabled, setIsEnabled] = useState();
+
+  setIsEnabledManual(isAnimalPerdido)
+
+  function setIsEnabledManual(){
+    setIsEnabled(isAnimalPerdido);
+  }
+
+  console.log('============')
+  console.log('Animal: ' + animal.name)
+  console.log('isPerdido: ' + isAnimalPerdido)
+  console.log('============')
+
+  function toggleSwitch() {
+    const id_animal  = animal.id_animal;
+    setIsEnabled(previousState => !previousState);
+    
+    try{
+      if (!isEnabled){
+        api.post('setAnimalIsPerdido', { id_animal, isEnabled })
+        .then(console.log('Animal Perdido'))
+        .catch((err)=>alert(err))
+      } 
+      else {
+        api.post('setAnimalIsPerdido', { id_animal, isEnabled })
+        .then(console.log('Animal Seguro'))
+        .catch((err)=>alert(err))
+      }
+    } catch (err) {
+        alert(err);
+    }
+  }
 
   return (
     <View style={[styles.container, props.style]}>
@@ -19,7 +59,8 @@ function ListItemAnimal({animal}, ...props) {
             <Switch 
               style={styles.materialSwitch}
               onValueChange={toggleSwitch}
-              onPress={}></Switch>
+              value={isEnabled}>
+            </Switch>
         </View>
         <View>
           <ImageBackground 
@@ -29,7 +70,7 @@ function ListItemAnimal({animal}, ...props) {
         </View>
         <CupertinoButtonInfo
           caption="Declarar ponto no mapa"
-          style={styles.cupertinoButtonInfo}
+          disabled={isEnabled}
         ></CupertinoButtonInfo>
       </View>
     </View>
@@ -58,21 +99,14 @@ const styles = StyleSheet.create({
   },
   materialSwitch: {
     width: 45,
-    height: 25,
-    marginLeft: 10
+    height: 36,
+    marginLeft: 2
   },
   loremIpsumRow: {
     flexDirection: "row",
     marginTop: 5,
     marginLeft: 26,
     marginRight: 135
-  },
-  cupertinoButtonInfo: {
-    height: 44,
-    width: 246,
-    marginTop: 25,
-    marginBottom:25,
-    marginLeft: 90
   }
 });
 

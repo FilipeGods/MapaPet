@@ -8,9 +8,10 @@ exports.up = function(knex) {
         table.string('description', 255);
         table.boolean('isPerdido');
         table.boolean('isAdocao');
-        table.string('fk_id_user').unsigned();
+        table.string('fk_id_user').unsigned().notNullable();
         table.foreign('fk_id_user').references('id_user').inTable('users');
-        table.foreign('fk_id_user').references('id_marker').inTable('markers');
+        table.string('fk_id_marker').unsigned();
+        table.foreign('fk_id_marker').references('id_marker').inTable('markers');
         table.timestamps(true, true);
     });
 };

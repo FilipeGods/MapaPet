@@ -2,6 +2,10 @@ const express = require('express');
 const routes = express.Router();
 const userController = require('./controllers/userController');
 const markerController = require('./controllers/markerController');
+const animalController = require('./controllers/animalController');
+
+//USUARIO
+
 //Rota -> Listar usuarios *irá mudar pra trazer um só*
 routes.get('/users', userController.index);
 
@@ -10,6 +14,23 @@ routes.post('/userLogin', userController.login);
 
 //Rota -> criação de usuários
 routes.post('/users', userController.create);
+
+//ANIMAIS 
+
+//Rota -> Recuperar todos os animais registrados
+routes.get('/animals', animalController.index);
+
+//Rota -> Recupera animais do dono
+routes.post('/getMyAnimals', animalController.getMyAnimals);
+
+//Rota -> Atualiza um animal
+routes.post('/setAnimalIsPerdido', animalController.setAnimalIsPerdido);
+
+//Rota -> Registra novo animal
+routes.post('/animals', animalController.create);
+
+
+//MARKERS
 
 //Rota -> Salvar markers
 routes.post('/marker', markerController.create);
