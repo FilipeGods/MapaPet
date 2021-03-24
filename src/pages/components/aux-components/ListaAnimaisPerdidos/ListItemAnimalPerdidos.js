@@ -6,14 +6,13 @@ import {
   ImageBackground, 
   Switch, 
   TouchableOpacity } from "react-native";
-import MaterialSwitch from "./MaterialSwitch";
-import CupertinoButtonInfo from "./CupertinoButtonInfo";
+import CupertinoButtonInfo from "../ListaAnimais/CupertinoButtonInfo";
 import api from '../../../../services/api';
 
 
 const image = { uri: "https://reactjs.org/logo-og.png" };
 
-function ListItemAnimal({animal}, ...props) {
+function ListItemAnimalPerdidos({animal}, ...props) {
 
   let isAnimalPerdido = animal.isPerdido ? true : false;
   const id_animal  = animal.id_animal;
@@ -55,13 +54,10 @@ function ListItemAnimal({animal}, ...props) {
         <Text style={styles.nomeDoAnimal}>{animal.name}</Text>
         <View
           style={styles.loremIpsumRow}>
-            <Text style={styles.loremIpsum}>Declarar como perdido</Text>
-            <Switch 
-              style={styles.materialSwitch}
-              onValueChange={toggleSwitch}
-              value={isEnabled}>
-            </Switch>
+            <Text style={styles.loremIpsum}>perdido em: {animal.perdidoDate}</Text>
         </View>
+        <Text>Contatos:</Text>
+      
         <View>
           <ImageBackground 
             source={image}
@@ -69,8 +65,8 @@ function ListItemAnimal({animal}, ...props) {
           </ImageBackground>
         </View>
         <CupertinoButtonInfo
-          caption="Declarar ponto no mapa"
-          disabled={isEnabled}
+          caption="Visualizar no Mapa"
+          disabled={true}
         ></CupertinoButtonInfo>
       </View>
     </View>
@@ -83,13 +79,20 @@ const styles = StyleSheet.create({
     marginTop: 25
   },
   rect: {
-    backgroundColor: "#E6E6E6"
+    backgroundColor: "#E6E6E6",
+    width: '100%',
   },
   nomeDoAnimal: {
     fontSize: 30,
     color: "#121212",
     marginTop: 21,
     marginLeft: 26
+  },
+  contatoTitle: {
+    fontSize: 25,
+    color: "#121212",
+    marginTop: 21,
+    marginLeft: 50
   },
   loremIpsum: {
     color: "#121212",
@@ -110,4 +113,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ListItemAnimal;
+export default ListItemAnimalPerdidos;

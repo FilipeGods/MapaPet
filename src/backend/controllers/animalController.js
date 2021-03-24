@@ -18,31 +18,26 @@ module.exports = {
         return res.json(animals);
     },
 
-    async setAnimalIsPerdido (req, res){
-        console.log('=====Animal Perdido====')
-        try{
-            const { id_animal, isEnabled } = req.body;
-            console.log(id_animal)
-
-            const animals = await connection('animals')
-                                    .where('id_animal', id_animal)
-                                    .update('isPerdido', !isEnabled);
-        } catch (err){
-            throw(err)
-        }
+    async getLostAnimals (req, res){
+        const animals = await connection('animals')
+                                 .select('*').where('isPerdido', true)
+                                       
+        return res.json(animals);
     },
 
-    async setAnimalAsSafe (req, res){
+    async setAnimalIsPerdido (req, res){
         console.log('=====Animal Perdido====')
-        try{
-            const { animal_id } = req.body;
+        
+        const { id_animal, isEnabled } = req.body;
+        // console.log(id_animal)
+        // console.log(isEnabled)
+        console.log(req.body)
 
-            const animals = await connection('animals')
-                                    .where('animal_id', animal_id)
-                                    .update('is_perdido', true);
-        } catch (err){
-            throw(err)
-        }
+        const response = await connection('animals')
+                                .where('id_animal', id_animal)
+                                .update('isPerdido', isEnabled);
+        
+        return res.json(response);                  
     },
 
     async create (req, res){

@@ -14,31 +14,14 @@ import login from './pages/homescreen/Login';
 import cadastro from './pages/homescreen/Cadastro';
 import menuPrincipal from './pages/homescreen/MenuPrincipal';
 import listaAnimais from './pages/homescreen/ListaAnimais';
+import listaAnimaisPerdidos from './pages/homescreen/ListaAnimaisPerdidos';
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
-      drawerContent={props => {
-        const filteredProps = {
-          ...props,
-          state: {
-            ...props.state,
-            routeNames: props.state.routeNames.filter(
-              routeName => routeName !== 'cadastro'
-            ),
-            routes: props.state.routes.filter(
-              route => route.name !== 'cadastro'
-            ),
-          },
-        };
-        return (
-          <DrawerContentScrollView {...filteredProps}>
-            <DrawerItemList {...filteredProps} />
-          </DrawerContentScrollView>
-        );
-      }}
+      /* insira aqui código para filtragem dos itens */
     >
       <Drawer.Screen 
         name="login" 
@@ -53,9 +36,37 @@ const DrawerNavigator = () => {
         component={listaAnimais}
         options={headerListaAnimais}
       />
+      <Drawer.Screen 
+        name="listaAnimaisPerdidos"
+        component={listaAnimaisPerdidos}
+        options={headerListaAnimaisPerdidos}
+      />
     </Drawer.Navigator>
   );
 };
+
+// código para filtragem dos itens
+/*
+drawerContent={props => {
+  const filteredProps = {
+    ...props,
+    state: {
+      ...props.state,
+      routeNames: props.state.routeNames.filter(
+        routeName => routeName !== 'cadastro'
+      ),
+      routes: props.state.routes.filter(
+        route => route.name !== 'cadastro'
+      ),
+    },
+  };
+  return (
+    <DrawerContentScrollView {...filteredProps}>
+      <DrawerItemList {...filteredProps} />
+    </DrawerContentScrollView>
+  );
+}} 
+*/
 
 // CONFIGURAÇÕES GENERICAS
 const headerButton = {
@@ -111,8 +122,21 @@ const headerLogin = {
 }
 
 const headerListaAnimais = {
-  drawerLabel: 'Listar Meus Animais',
+  drawerLabel: 'Meus Animais',
   title: 'Meus Animais',
+  headerShown: true,
+  headerStyle: {backgroundColor: "rgba(94,53,177,1)", },
+  headerTitleStyle: {
+    color: "rgba(255,255,255,1)",
+    fontSize: 26,
+  },
+  headerTitleAlign: 'center',
+  headerTintColor: 'white'
+}
+
+const headerListaAnimaisPerdidos = {
+  drawerLabel: 'Animais Perdidos',
+  title: 'Animais Perdidos',
   headerShown: true,
   headerStyle: {backgroundColor: "rgba(94,53,177,1)", },
   headerTitleStyle: {

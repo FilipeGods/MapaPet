@@ -23,6 +23,9 @@ routes.get('/animals', animalController.index);
 //Rota -> Recupera animais do dono
 routes.post('/getMyAnimals', animalController.getMyAnimals);
 
+//Rota -> Recupera animais perdidos (isPerdido === true)
+routes.get('/getLostAnimals', animalController.getLostAnimals);
+
 //Rota -> Atualiza um animal
 routes.post('/setAnimalIsPerdido', animalController.setAnimalIsPerdido);
 
