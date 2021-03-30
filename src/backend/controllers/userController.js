@@ -10,7 +10,17 @@ module.exports = {
         
         return res.json(users);
     },
+    
+    async getUser (req, res) {
+        const {id_user} = req.body;
 
+        const user = await connection('users')
+                                    .select('*')
+                                    .where('id_user', id_user)        
+        
+        console.log(user)
+        return res.json(user);
+    },
 
     async login (req, res) {
         console.log('==========================login============================');

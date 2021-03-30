@@ -18,16 +18,13 @@ function ListItemAnimalPerdidos({animal}, ...props) {
   const id_animal  = animal.id_animal;
   const [isEnabled, setIsEnabled] = useState();
 
-  // console.log('============')
-  // console.log('Animal: ' + animal.name)
-  // console.log('isPerdido: ' + isAnimalPerdido)
-  // console.log('============')
-
+  //é disparado toda vez que o componente é atualizado
   useEffect(() => {
     console.log(isAnimalPerdido)
     setIsEnabled(isAnimalPerdido);
   }, []);
 
+  // é disparado toda vez que isEnabled é alterado 
   useEffect(() => {
     console.log(animal.name +': ' + isEnabled)
     if(isEnabled != undefined){
@@ -50,19 +47,20 @@ function ListItemAnimalPerdidos({animal}, ...props) {
 
   return (
     <View style={[styles.container, props.style]}>
-      <View style={styles.rect}>
+      <View style={styles.rect}>      
         <Text style={styles.nomeDoAnimal}>{animal.name}</Text>
-        <View
-          style={styles.loremIpsumRow}>
-            <Text style={styles.loremIpsum}>perdido em: {animal.perdidoDate}</Text>
+        <View style={styles.loremIpsumRow}>
+            <Text style={styles.loremIpsum}>Perdido em: {animal.lostDate}</Text>
         </View>
-        <Text>Contatos:</Text>
-      
         <View>
           <ImageBackground 
             source={image}
             style={{height: 300}}>
           </ImageBackground>
+        </View>
+        <View style={styles.rect2}>
+            <Text style={styles.loremIpsum}>Email: {animal.user.email}</Text>
+            <Text style={styles.loremIpsum}>Celular: {animal.user.cellphone}</Text>
         </View>
         <CupertinoButtonInfo
           caption="Visualizar no Mapa"
@@ -81,6 +79,12 @@ const styles = StyleSheet.create({
   rect: {
     backgroundColor: "#E6E6E6",
     width: '100%',
+  },
+  rect2: {
+    marginTop: 15,
+    marginLeft: 26,
+    marginRight: 135,
+    marginBottom: -15
   },
   nomeDoAnimal: {
     fontSize: 30,

@@ -13,44 +13,57 @@ export default class ListaAnimaisComponent extends React.Component {
         super(props)
 
         this.state = {
-            animals: []
+            animals: [],
+            refreshing: false,
         }
     }
 
-    
-
     async componentDidMount(){
-        let id_user = USUARIO.id_user;
-        
+        id_user = USUARIO.id_user;
+        aAnimal_ids = [];
+        this.atualizarRegistros();
+    }
+
+    async atualizarRegistros(){
         try{
             const response = await api.post('getMyAnimals', { id_user })
             console.log('response: ' + response.data) 
             
+            console.log(aAnimal_ids)
+            this.state.animals = [];
             for (let i=0; i<response.data.length; i++) {
                 let oAnimal = response.data[i];
-
-                this.setState({
-                        animals: [...this.state.animals, 
-                            {
-                                key: oAnimal.id_animal,
-                                id_animal: oAnimal.id_animal,
-                                specie: oAnimal.specie,
-                                name: oAnimal.name,
-                                race:  oAnimal.race,
-                                size: oAnimal.size,
-                                description: oAnimal.description,
-                                isPerdido: oAnimal.isPerdido,
-                                fk_id_user: oAnimal.fk_id_user,
-                                fk_id_marker: oAnimal.fk_id_marker,
-                                created_at: oAnimal.created_at,
-                                updated_at: oAnimal.updated_at
-                            }
-                        ] 
-                    });
+                this.handleSetState(oAnimal);
             }        
         } catch (err) {
             alert(err)
         }
+    }
+
+    async handleSetState(oAnimal) {
+        console.log('teste 4' + oAnimal)
+        this.setState({
+            animals: [...this.state.animals, 
+                {
+                    key: oAnimal.id_animal,
+                    id_animal: oAnimal.id_animal,
+                    specie: oAnimal.specie,
+                    name: oAnimal.name,
+                    race:  oAnimal.race,
+                    size: oAnimal.size,
+                    description: oAnimal.description,
+                    isPerdido: oAnimal.isPerdido,
+                    fk_id_user: oAnimal.fk_id_user,
+                    fk_id_marker: oAnimal.fk_id_marker,
+                    created_at: oAnimal.created_at,
+                    updated_at: oAnimal.updated_at
+                }
+            ] 
+        });
+    }
+
+    handleRefresh = () => {
+        this.atualizarRegistros();
     }
 
     render () {
@@ -58,6 +71,8 @@ export default class ListaAnimaisComponent extends React.Component {
             <View style={{flex:2}}>
                 <FlatList 
                     data={this.state.animals}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.handleRefresh}
                     renderItem={({item}) => 
                             <View>
                                 <ListItemAnimal animal={item}/>

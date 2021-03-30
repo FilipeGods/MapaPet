@@ -9,6 +9,9 @@ const animalController = require('./controllers/animalController');
 //Rota -> Listar usuarios *irá mudar pra trazer um só*
 routes.get('/users', userController.index);
 
+//Rota -> Recuperar Usuario por ID
+routes.post('/user', userController.getUser);
+
 //Rota -> Login de usuários
 routes.post('/userLogin', userController.login);
 
@@ -25,6 +28,9 @@ routes.post('/getMyAnimals', animalController.getMyAnimals);
 
 //Rota -> Recupera animais perdidos (isPerdido === true)
 routes.get('/getLostAnimals', animalController.getLostAnimals);
+
+//Rota -> Recupera animais perdidos (isPerdido === true)
+routes.post('/getLostAnimal', animalController.getLostAnimal);
 
 //Rota -> Atualiza um animal
 routes.post('/setAnimalIsPerdido', animalController.setAnimalIsPerdido);

@@ -25,13 +25,34 @@ module.exports = {
         return res.json(animals);
     },
 
-    async setAnimalIsPerdido (req, res){
-        console.log('=====Animal Perdido====')
+    async getLostAnimal (req, res){
+        console.log('getLostAnimal Acessado')
+        const {id_user, campoPesquisa} = req.body;
+        console.log(id_user)
+        console.log(campoPesquisa)
         
+        console.log('Procurando por name')
+        let animals = await connection('animals')
+                                 .select('*').where({   fk_id_user: id_user,
+                                                        isPerdido: true,
+                                                        name: campoPesquisa
+                                                    })
+
+        if(animals.length === 0){
+            console.log('Procurando por ID')
+            animals = await connection('animals')
+                                 .select('*').where({   fk_id_user: id_user,
+                                                        isPerdido: true,
+                                                        id_animal: campoPesquisa
+                                                    })
+        }
+
+        console.log(animals)
+        return res.json(animals);
+    },
+
+    async setAnimalIsPerdido (req, res){
         const { id_animal, isEnabled } = req.body;
-        // console.log(id_animal)
-        // console.log(isEnabled)
-        console.log(req.body)
 
         const response = await connection('animals')
                                 .where('id_animal', id_animal)
