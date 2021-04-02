@@ -9,6 +9,7 @@ function MaterialUnderlineTextbox2({onChangeText, ...props}) {
         placeholder={props.inputStyle || "Placeholder"}
         style={styles.inputStyle}
         secureTextEntry={false}
+        required={true}
       ></TextInput>
     </View>
   );
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   inputStyle: {
-    color: "#000",
+    color: "black",
     paddingRight: 5,
     fontSize: 16,
     alignSelf: "stretch",

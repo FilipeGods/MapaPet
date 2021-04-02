@@ -23,6 +23,9 @@ routes.post('/users', userController.create);
 //Rota -> Recuperar todos os animais registrados
 routes.get('/animals', animalController.index);
 
+//Rota -> Registra novo animal
+routes.post('/animals', animalController.create);
+
 //Rota -> Recupera animais do dono
 routes.post('/getMyAnimals', animalController.getMyAnimals);
 
@@ -34,9 +37,6 @@ routes.post('/getLostAnimal', animalController.getLostAnimal);
 
 //Rota -> Atualiza um animal
 routes.post('/setAnimalIsPerdido', animalController.setAnimalIsPerdido);
-
-//Rota -> Registra novo animal
-routes.post('/animals', animalController.create);
 
 
 //MARKERS

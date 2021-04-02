@@ -63,16 +63,17 @@ module.exports = {
 
     async create (req, res){
         try{
-            const { name, specie, size, description, fk_id_user } = req.body;
+            const { name, specie, race, size, description, fk_id_user } = req.body;
             console.log({ name, specie, size, description, fk_id_user })
             const isPerdido = false;
     
             const id_animal = crypto.randomBytes(4).toString('HEX');
         
-            await connection('animals').insert({ //users aqui no parametro é a tabela do banco
+            await connection('animals').insert({
                 id_animal,
                 name,
                 specie,
+                race,
                 size, 
                 description,
                 isPerdido,

@@ -1,12 +1,18 @@
 import React, { Component, useState } from 'react';
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import api from '../../services/api';
 let USUARIO = require('../../services/globalUserController.json');
 
 //componentes
 import ListItemAnimal from './aux-components/ListaAnimais/ListItemAnimal';
+
+
+let id_user;
+let aAnimal_ids = [];
+let isLoading;
 
 export default class ListaAnimaisComponent extends React.Component {
     constructor(props){
@@ -79,9 +85,31 @@ export default class ListaAnimaisComponent extends React.Component {
                             </View>
                         }
                 />
-                <View style={{marginBottom: 100}}></View>
+                <View style={styles.footer}>
+                        <TouchableOpacity
+                            onPress={() => console.log('coloque navegação aqui')}>
+                            <View style={styles.addButton}>
+                                <MaterialIcons   
+                                    name="add"
+                                    size={32}/>
+                            </View>    
+                        </TouchableOpacity>
+                    </View>
+                <View style={{marginBottom: 90}}></View>
             </View>
         );  
     }
 
 }
+
+const styles = StyleSheet.create({
+    footer:{
+      borderTopWidth:1,  
+      borderColor: "#D9D5DC",
+      backgroundColor: "transparent",
+      alignItems: "center"
+    },
+    addButton:{
+        marginTop:10
+    }
+});

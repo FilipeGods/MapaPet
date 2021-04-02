@@ -15,6 +15,7 @@ import cadastro from './pages/homescreen/Cadastro';
 import menuPrincipal from './pages/homescreen/MenuPrincipal';
 import listaAnimais from './pages/homescreen/ListaAnimais';
 import listaAnimaisPerdidos from './pages/homescreen/ListaAnimaisPerdidos';
+import cadastroAnimais from './pages/homescreen/CadastroAnimais';
 
 const Drawer = createDrawerNavigator();
 
@@ -40,6 +41,11 @@ const DrawerNavigator = () => {
         name="listaAnimaisPerdidos"
         component={listaAnimaisPerdidos}
         options={headerListaAnimaisPerdidos}
+      />
+      <Drawer.Screen 
+        name="CadastrarAnimal"
+        component={cadastroAnimais}
+        options={headerCadastroAnimais}
       />
     </Drawer.Navigator>
   );
@@ -137,6 +143,19 @@ const headerListaAnimais = {
 const headerListaAnimaisPerdidos = {
   drawerLabel: 'Animais Perdidos',
   title: 'Animais Perdidos',
+  headerShown: true,
+  headerStyle: {backgroundColor: "rgba(94,53,177,1)", },
+  headerTitleStyle: {
+    color: "rgba(255,255,255,1)",
+    fontSize: 26,
+  },
+  headerTitleAlign: 'center',
+  headerTintColor: 'white'
+}
+
+const headerCadastroAnimais = {
+  drawerLabel: 'Cadastrar Animal',
+  title: 'Cadastrar Animal',
   headerShown: true,
   headerStyle: {backgroundColor: "rgba(94,53,177,1)", },
   headerTitleStyle: {

@@ -95,7 +95,6 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
             alert(err)
         }
         
-        await setTimeout(() => console.log('tempo passado'), 10000)
     }
 
     handleRefresh = () => {
@@ -106,7 +105,8 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
     }
 
     handleClearCampoPesquisa = () => {
-        this.setState( {campoPesquisa: ' '} );
+        console.log('limpando')
+        this.setState( {campoPesquisa: null} );
         this.atualizarRegistros();
     }
 
@@ -127,11 +127,22 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
         
     }
 
+    isDisabled() {
+        let campoPesquisa = this.state.campoPesquisa;
+        console.log(campoPesquisa)
+        if(campoPesquisa) 
+            //console.log('true')
+            return false
+        else
+            //console.log('false')
+            return true 
+    }
+
     render () {
         return (
-            <View style={{flex:2}}>
-                <View style={styles.container}>
-                    { (true) &&
+            <View style={{flex:1}}>
+                <View style={styles.header}>
+                    { (true) && //condição para ocultar elemente da tela
                         <View>
                             <TouchableOpacity
                                 onPress={() => this.handleSearchCampoPesquisa()}>
@@ -147,26 +158,23 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
                         placeholder='Nome ou Código'
                         style={styles.inputStyle}
                         onChangeText={(campoPesquisa) => {this.setState({campoPesquisa})}}
-                        onSubmitEditing={() => console.log('teste')}
+                        onSubmitEditing={() => this.handleSearchCampoPesquisa()}
                         value={this.state.campoPesquisa}>
                         </TextInput>
-                    { (true) &&
+                    { (true) && //condição para ocultar elemente da tela 
                         <View>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                activeOpacity={this.isDisabled() ? 1 : 0}>
                                 <MaterialIcons 
                                     name='cancel'
                                     size={32}
-                                    onPress={() => this.handleClearCampoPesquisa()}/>
+                                    onPress={() => this.handleClearCampoPesquisa()}
+                                    disabled={this.isDisabled()}
+                                    color={this.isDisabled() ? 'grey' : 'black'}/>
                             </TouchableOpacity> 
                         </View>
                     }    
                 </View>
-                { this.state.isLoading &&
-                    <ActivityIndicator>
-
-                    </ActivityIndicator>
-                }
-                { !this.state.isLoading &&
                     <FlatList 
                         progressViewOffset={5}
                         data={this.state.animals}
@@ -178,9 +186,17 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
                                 </View>
                             }
                     />
-                }
-                    
-                <View style={{marginBottom: 100}}></View>
+                    <View style={styles.footer}>
+                        <TouchableOpacity
+                            onPress={() => this.handleSearchCampoPesquisa()}>
+                            <View>
+                                <MaterialIcons   
+                                    name="add"
+                                    size={32}/>
+                            </View>    
+                        </TouchableOpacity>
+                    </View>
+                <View style={{marginBottom: 90}}></View>
             </View>
         );  
     }
@@ -188,11 +204,17 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    header: {
       borderBottomWidth: 1,
       borderColor: "#D9D5DC",
       backgroundColor: "transparent",
       flexDirection: "row",
+      alignItems: "center"
+    },
+    footer:{
+      borderTopWidth:1,  
+      borderColor: "#D9D5DC",
+      backgroundColor: "transparent",
       alignItems: "center"
     },
     inputStyle: {
