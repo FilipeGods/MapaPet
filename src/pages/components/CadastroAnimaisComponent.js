@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { StyleSheet, View, Text, TextInput } from "react-native";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 import { RadioButton } from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
 let USUARIO = require('../../services/globalUserController.json'); 
@@ -89,6 +89,11 @@ function CadastroAnimaisComponent(props) {
           style={styles.inputNome}
         ></MaterialUnderlineTextbox2>
       { /* =======================NOME========================== */}  
+      { /* =======================FOTO========================== */}
+      <View style={{marginTop: 30}}>
+        <Text>teste</Text>
+      </View>
+      { /* =======================FOTO========================== */}
       { /* =======================ESPECIE========================== */}  
         <View style={styles.containerRadioButton}>
             <Text style={{fontSize: 18, }}>Espécie:</Text>
