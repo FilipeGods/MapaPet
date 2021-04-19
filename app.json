@@ -20,7 +20,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "android-package",
+      "package": "android.package",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
