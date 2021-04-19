@@ -186,16 +186,6 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
                                 </View>
                             }
                     />
-                    <View style={styles.footer}>
-                        <TouchableOpacity
-                            onPress={() => this.handleSearchCampoPesquisa()}>
-                            <View>
-                                <MaterialIcons   
-                                    name="add"
-                                    size={32}/>
-                            </View>    
-                        </TouchableOpacity>
-                    </View>
                 <View style={{marginBottom: 90}}></View>
             </View>
         );  

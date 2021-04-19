@@ -1,7 +1,8 @@
 import React, { Component, useState } from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import { RadioButton } from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 let USUARIO = require('../../services/globalUserController.json'); 
 import api from '../../services/api';
 
@@ -20,6 +21,9 @@ function CadastroAnimaisComponent(props) {
     const [size, setSize] = useState('');
     const [description, setDescription] = useState('');
     const [isPerido, setIsperido] = useState('');
+
+    const [isPictureTaken, setIsPictureTaken] = useState();
+
     const navigation = useNavigation();
     
     function funcaoTeste() {
@@ -76,7 +80,7 @@ function CadastroAnimaisComponent(props) {
                 break;
         }
     }
-
+    
   return (
     <View style={[styles.container, props.style]}>
       <View >
@@ -90,9 +94,25 @@ function CadastroAnimaisComponent(props) {
         ></MaterialUnderlineTextbox2>
       { /* =======================NOME========================== */}  
       { /* =======================FOTO========================== */}
-      <View style={{marginTop: 30}}>
-        <Text>teste</Text>
-      </View>
+      <TouchableOpacity onPress={ () => {} }>
+        { !isPictureTaken &&
+          <View style={{marginTop: 30, height: 300, backgroundColor:'grey', justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{}}>
+              <MaterialIcons   
+                  name="camera-alt"
+                  size={32}/>
+            </View>
+          </View>
+        }
+        { isPictureTaken &&
+          <View style={{marginTop: 30, height: 300, backgroundColor:'grey', justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{}}>
+              <Image   
+                  source=""/>
+            </View>
+          </View>
+        }
+      </TouchableOpacity>
       { /* =======================FOTO========================== */}
       { /* =======================ESPECIE========================== */}  
         <View style={styles.containerRadioButton}>
