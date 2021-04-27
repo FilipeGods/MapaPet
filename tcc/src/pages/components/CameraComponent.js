@@ -13,7 +13,8 @@ function CameraComponent(props) {
     const camRef = useRef(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [picture, setPicture] = useState();
-    const [wasPictureTaken, setWasPictureTaken] = useState(false);
+    const [loadingIndicator, setLoadingIndicator] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
     const [hasPermission, setHasPermission] = useState(null);
 
 
@@ -29,12 +30,17 @@ function CameraComponent(props) {
 
     async function takePicture () {
         if(camRef){
-          setWasPictureTaken(true);
+          setLoadingIndicator(true);
+          setOpenModal(true);
           const data = await camRef.current.takePictureAsync();
+          setLoadingIndicator(false);
           setPicture(data.uri);
-          console.log(picture);
         }
     } 
+
+    function onConfirmPicture () {
+      console.log('confirmado');
+    }
 
     if(hasPermission === null){ // o que mostrar na tela caso não tenha permissão
         return <View/>
@@ -55,13 +61,14 @@ function CameraComponent(props) {
             }
             <TouchableOpacity 
               style={styles.takePictureButton}
-              onPress={takePicture}>
-              { !wasPictureTaken &&
+              onPress={takePicture}
+              disabled={loadingIndicator}>
+              { !loadingIndicator &&
                 <MaterialIcons   
                     name="camera-alt"
                     size={32}/>
               }
-              { wasPictureTaken &&
+              { loadingIndicator &&
                 <MaterialIcons   
                     name="hourglass-empty"
                     size={32}/>
@@ -71,16 +78,39 @@ function CameraComponent(props) {
             <Modal
               animationType="slide"
               transparent={false}
-              visible={wasPictureTaken}
-              onRequestClose={() => setWasPictureTaken(false)}>
+              visible={openModal}
+              onRequestClose={() => setOpenModal(false)}>
 
-              <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-                <Image
-                    style={{width:'100%', height:300, borderRadius:20}}
-                    source={{ uri: picture }}
-                />     
-              </View>  
-              
+              <View style={{width:'100%', height:400, justifyContent:'center', alignItems:'center'}}>
+                { !loadingIndicator &&
+                  <View style={{}}>
+                    <Image
+                      style={{flex: 1, borderRadius:20}}
+                      source={{ uri: picture }}/>
+                    <View style={styles.viewModalButtons}>
+                      <TouchableOpacity 
+                        style={styles.modalConfirmButton}
+                        onPress={onConfirmPicture}>
+                        <MaterialIcons   
+                          name="check"
+                          size={32}/>
+                      </TouchableOpacity>
+                      <TouchableOpacity 
+                        style={styles.modalCancelButton}
+                        onPress={() => setOpenModal(false)}>
+                        <MaterialIcons   
+                          name="close"
+                          size={32}/> 
+                      </TouchableOpacity>
+                    </View>  
+                  </View> 
+                }
+                { loadingIndicator &&
+                  <MaterialIcons   
+                    name="hourglass-empty"
+                    size={32}/>
+                }
+              </View> 
             </Modal>
         </View>
     );
@@ -98,7 +128,30 @@ function CameraComponent(props) {
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: 'grey',
-        }
+        },
+        viewModalButtons:{
+          paddingTop:50,
+          width:'100%',
+          justifyContent:'space-evenly',
+          alignItems: 'center',
+          flexDirection: 'row'
+        },
+        modalConfirmButton: {
+          width:90,
+          height:50,
+          borderRadius: 10,
+          backgroundColor: 'green',
+          alignItems:'center',
+          justifyContent:'center'
+        },
+        modalCancelButton: {
+          width:90,
+          height:50,
+          borderRadius: 10,
+          backgroundColor: 'red',
+          alignItems:'center',
+          justifyContent:'center'
+        },
     });
 
 export default CameraComponent;
