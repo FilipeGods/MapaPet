@@ -74,6 +74,7 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
                         name: oAnimal.name,
                         race:  oAnimal.race,
                         size: oAnimal.size,
+                        picture: oAnimal.picture,
                         description: oAnimal.description,
                         isPerdido: oAnimal.isPerdido,
                         fk_id_user: oAnimal.fk_id_user,

@@ -8,9 +8,8 @@ import {
   TouchableOpacity } from "react-native";
 import CupertinoButtonInfo from "../ListaAnimais/CupertinoButtonInfo";
 import api from '../../../../services/api';
+import {images} from '../../../../assets/index';
 
-
-const image = { uri: "https://reactjs.org/logo-og.png" };
 
 function ListItemAnimalPerdidos({animal}, ...props) {
 
@@ -53,10 +52,18 @@ function ListItemAnimalPerdidos({animal}, ...props) {
             <Text style={styles.loremIpsum}>Perdido em: {animal.lostDate}</Text>
         </View>
         <View>
-          <ImageBackground 
-            source={image}
-            style={{height: 300}}>
-          </ImageBackground>
+        { (animal.picture === null) &&
+            <ImageBackground 
+              source={images.pata}
+              style={{height: 300}}>
+            </ImageBackground>
+          }
+          { (animal.picture !== null) &&
+            <ImageBackground 
+              source={{uri: animal.picture}}
+              style={{height: 300}}>
+            </ImageBackground>
+          }
         </View>
         <View style={styles.rect2}>
             <Text style={styles.loremIpsum}>Email: {animal.user.email}</Text>

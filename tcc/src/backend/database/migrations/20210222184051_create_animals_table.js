@@ -5,6 +5,7 @@ exports.up = function(knex) {
         table.string('name', 255).notNullable();;
         table.string('race', 255);
         table.string('size', 255);
+        table.string('picture', 255);
         table.string('description', 255);
         table.boolean('isPerdido');
         table.boolean('isAdocao');

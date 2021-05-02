@@ -1,5 +1,5 @@
-import React, { Component, useState } from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import React, { Component, useEffect, useState } from "react";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground, Alert } from "react-native";
 import { RadioButton } from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
@@ -12,7 +12,53 @@ import MaterialButtonViolet1 from "./aux-components/CadastroScreen/MaterialButto
 import MaterialButtonWithVioletText1 from "./aux-components/CadastroScreen/MaterialButtonWithVioletText1";
 import MaterialRightIconTextbox1 from "./aux-components/CadastroScreen/MaterialRightIconTextbox1"; 
 
-function CadastroAnimaisComponent(props) {
+let image;
+let showImage;
+
+function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
+    
+    
+    image = pictureContent;
+  
+    const [showImage, setShowImage] = useState(false)
+
+    React.useEffect(
+      () => navigation.addListener('focus', () => {
+          console.log('CadastroAnimaisComponent')  
+          console.log('pictureContent: ',image)
+
+
+          image = { uri: pictureContent };
+          console.log('entrando...')
+          // console.log('image: ',image) 
+          if(USUARIO.lastPage === 'Camera'){
+            setShowImage(true);
+            console.log('showImage: ', showImage)
+            console.log('registro anterior')  
+          } else {
+            image.uri = null;
+            setShowImage(false);
+            console.log('showImage: ', showImage)
+            console.log('novo registro')
+          }
+            
+      }),
+      []
+    );
+
+    React.useEffect(
+      () => navigation.addListener('blur', () => {
+          console.log('saindo...')
+          USUARIO.lastPage = "CadastrarAnimal"
+          setName("");
+          setSpecie("");
+          setSpecieRadioValue("");
+          setRace("");
+          setSize("");
+          setDescription("");
+      }),
+      []
+    );
 
     const [name, setName] = useState('');
     const [specie, setSpecie] = useState('');
@@ -22,7 +68,8 @@ function CadastroAnimaisComponent(props) {
     const [description, setDescription] = useState('');
     const [isPerido, setIsperido] = useState('');
 
-    const [isPictureTaken, setIsPictureTaken] = useState();
+    const [isPictureTaken, setIsPictureTaken] = useState(false);
+    const [picture, setPicture] = useState('');
 
     const navigation = useNavigation();
     
@@ -35,32 +82,46 @@ function CadastroAnimaisComponent(props) {
     }
 
     async function handleCreateAnimal(e) {
-        let fk_id_user = USUARIO.id_user;
         if(name && specie) {
-          api.post('animals', {
-              name,
-              specie,
-              race,
-              size,
-              description,
-              fk_id_user
-          }).then(() => {
-              alert('Cadastro realizado com sucesso!');
-              navigation.navigate('listaAnimais')
-          }).catch(() => {
-              alert('Erro no cadastro');
-          });
+          if(showImage){
+            registrarAnimal();
+          } else {
+            Alert.alert(
+              'Foto', //título
+              'Uma foto é essencial para a identificação do seu animal, ' + // mesnagem
+              'se possível nos forneça uma.',
+              [
+                {
+                  text: 'voltar'
+                },
+                {
+                  text: 'Não é possível fornecer uma foto',
+                  onPress: registrarAnimal
+                }
+              ]
+            )
+          }
         } else {
-          alert('Preenchimento obrigatório: \n Nome e Espécie')
+            alert('Preenchimento obrigatório: \n Nome e Espécie')
         }
      }
-    function handleCreateAnimalCheck(){
-      console.log('======')
-      console.log(name)
-      console.log(specie)
-      console.log(race)
-      console.log(size)
-      console.log(description)
+    function registrarAnimal(){
+      let fk_id_user = USUARIO.id_user;
+      api.post('animals', {
+          name,
+          specie,
+          race,
+          size,
+          picture: pictureContent,
+          description,
+          fk_id_user
+      })
+      .then(() => {
+        navigation.navigate('listaAnimais');
+        alert('Cadastro realizado com sucesso!');
+      }).catch(() => {
+          alert('Erro no cadastro');
+      });
     }
 
 
@@ -81,6 +142,7 @@ function CadastroAnimaisComponent(props) {
         }
     }
     
+
   return (
     <View style={[styles.container, props.style]}>
       <View >
@@ -94,8 +156,8 @@ function CadastroAnimaisComponent(props) {
         ></MaterialUnderlineTextbox2>
       { /* =======================NOME========================== */}  
       { /* =======================FOTO========================== */}
-      <TouchableOpacity onPress={ () => {} }>
-        { !isPictureTaken &&
+      <TouchableOpacity onPress={ () => {navigation.navigate('Camera')} }>
+        { !showImage &&
           <View style={{marginTop: 30, height: 300, backgroundColor:'grey', justifyContent: 'center', alignItems: 'center'}}>
             <View style={{}}>
               <MaterialIcons   
@@ -104,12 +166,12 @@ function CadastroAnimaisComponent(props) {
             </View>
           </View>
         }
-        { isPictureTaken &&
-          <View style={{marginTop: 30, height: 300, backgroundColor:'grey', justifyContent: 'center', alignItems: 'center'}}>
-            <View style={{}}>
-              <Image   
-                  source=""/>
-            </View>
+        { showImage && 
+          <View style={{marginTop: 30}}>
+            <ImageBackground 
+              source={{ uri: pictureContent }}
+              style={{height: 300}}>
+            </ImageBackground>
           </View>
         }
       </TouchableOpacity>

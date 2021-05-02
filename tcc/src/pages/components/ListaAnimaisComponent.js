@@ -15,6 +15,8 @@ let aAnimal_ids = [];
 let isLoading;
 
 export default class ListaAnimaisComponent extends React.Component {
+    
+
     constructor(props){
         super(props)
 
@@ -57,6 +59,7 @@ export default class ListaAnimaisComponent extends React.Component {
                     name: oAnimal.name,
                     race:  oAnimal.race,
                     size: oAnimal.size,
+                    picture: oAnimal.picture,
                     description: oAnimal.description,
                     isPerdido: oAnimal.isPerdido,
                     fk_id_user: oAnimal.fk_id_user,
@@ -70,6 +73,11 @@ export default class ListaAnimaisComponent extends React.Component {
 
     handleRefresh = () => {
         this.atualizarRegistros();
+    }
+
+    handleNavigationCadastrarAnimal = () => {
+        const navigation = useNavigation();
+        navigation.navigate('CadastrarAnimal', {previusPage: 'ListaAnimais'})
     }
 
     render () {
@@ -87,7 +95,7 @@ export default class ListaAnimaisComponent extends React.Component {
                 />
                 <View style={styles.footer}>
                         <TouchableOpacity
-                            onPress={() => console.log('coloque navegação aqui')}>
+                            onPress={this.handleNavigationCadastrarAnimal}>
                             <View style={styles.addButton}>
                                 <MaterialIcons   
                                     name="add"

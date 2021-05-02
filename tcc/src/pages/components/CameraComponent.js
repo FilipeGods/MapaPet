@@ -5,9 +5,10 @@ import Modal from 'react-native-modal';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera'
+let USUARIO = require('../../services/globalUserController.json');
 
 
-function CameraComponent(props) {
+function CameraComponent() {
     const isFocused = useIsFocused();
     const navigation = useNavigation();
     const camRef = useRef(null);
@@ -39,7 +40,10 @@ function CameraComponent(props) {
     } 
 
     function onConfirmPicture () {
-      console.log('confirmado');
+      setLoadingIndicator(false);
+      setOpenModal(false);
+      USUARIO.lastPage = "Camera"
+      navigation.navigate('CadastrarAnimal', {picture})
     }
 
     if(hasPermission === null){ // o que mostrar na tela caso não tenha permissão

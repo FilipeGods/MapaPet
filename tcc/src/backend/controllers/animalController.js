@@ -63,8 +63,8 @@ module.exports = {
 
     async create (req, res){
         try{
-            const { name, specie, race, size, description, fk_id_user } = req.body;
-            console.log({ name, specie, size, description, fk_id_user })
+            const { name, specie, race, size, picture, description, fk_id_user } = req.body;
+            console.log({ name, specie, size, picture, description, fk_id_user })
             const isPerdido = false;
     
             const id_animal = crypto.randomBytes(4).toString('HEX');
@@ -75,6 +75,7 @@ module.exports = {
                 specie,
                 race,
                 size, 
+                picture,
                 description,
                 isPerdido,
                 fk_id_user

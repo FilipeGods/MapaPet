@@ -9,9 +9,8 @@ import {
 import MaterialSwitch from "./MaterialSwitch";
 import CupertinoButtonInfo from "./CupertinoButtonInfo";
 import api from '../../../../services/api';
+import {images} from '../../../../assets/index';
 
-
-const image = { uri: "https://reactjs.org/logo-og.png" };
 
 function ListItemAnimal({animal}, ...props) {
 
@@ -23,6 +22,8 @@ function ListItemAnimal({animal}, ...props) {
   // console.log('Animal: ' + animal.name)
   // console.log('isPerdido: ' + isAnimalPerdido)
   // console.log('============')
+
+console.log('animal.picture: ',animal.picture !== null)
 
   useEffect(() => {
     console.log(isAnimalPerdido)
@@ -63,10 +64,18 @@ function ListItemAnimal({animal}, ...props) {
             </Switch>
         </View>
         <View>
-          <ImageBackground 
-            source={image}
-            style={{height: 300}}>
-          </ImageBackground>
+          { (animal.picture === null) &&
+            <ImageBackground 
+              source={images.pata}
+              style={{height: 300}}>
+            </ImageBackground>
+          }
+          { (animal.picture !== null) &&
+            <ImageBackground 
+              source={{uri: animal.picture}}
+              style={{height: 300}}>
+            </ImageBackground>
+          }
         </View>
         <CupertinoButtonInfo
           caption="Declarar ponto no mapa"
