@@ -565,7 +565,7 @@ export default class Mapa extends React.Component {
         const {latitude, longitude, latitudeDelta, longitudeDelta} = this.state; //localização do usuário
         if (latitude) {
             return(
-                <View style={styles.container}>     
+                <View style={styles.container}>  
                     <MapView
                         showsUserLocation={true}
                         initialRegion={{
@@ -576,7 +576,7 @@ export default class Mapa extends React.Component {
                         }}
                         showsBuildings={true}
                         showsTraffic={true}
-                        style={styles.mapView}
+                        style={{flex:1, height:'100%', width:'100%'}}
                         onLongPress={
                             (e, i=1) => this.setState(
                                 { 
@@ -610,6 +610,10 @@ export default class Mapa extends React.Component {
                             )
                         )
                     }
+                        {/* <View>
+                            <Ionicons name="refresh-circle-sharp" size={32}/>
+                        </View> */}
+                        
                     </MapView>
 
                     {this.renderModalNewMarker()}

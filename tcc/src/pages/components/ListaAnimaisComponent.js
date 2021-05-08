@@ -68,38 +68,42 @@ export default class ListaAnimaisComponent extends React.Component {
         });
     }
 
+    funcaoTeste = () => {
+        console.log('isso é um teste')
+    }
+
     handleRefresh = () => {
         this.atualizarRegistros();
     }
 
     handleNavigationCadastrarAnimal = () => {
-        const navigation = useNavigation();
-        navigation.navigate('CadastrarAnimal', {previusPage: 'ListaAnimais'})
+        
+        //this.props.navigation.navigate('CadastrarAnimal', {previusPage: 'ListaAnimais'})
     }
 
     render () {
         return (
-            <View style={{flex:2}}>
+            <View style={{flex:1}}>
                 <FlatList 
                     data={this.state.animals}
                     refreshing={this.state.refreshing}
                     onRefresh={this.handleRefresh}
                     renderItem={({item}) => 
                             <View>
-                                <ListItemAnimal animal={item}/>
+                                <ListItemAnimal animal={item} handleRefresh={this.handleRefresh}/>
                             </View>
                         }
                 />
                 <View style={styles.footer}>
-                        <TouchableOpacity
-                            onPress={this.handleNavigationCadastrarAnimal}>
-                            <View style={styles.addButton}>
-                                <MaterialIcons   
-                                    name="add"
-                                    size={32}/>
-                            </View>    
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity
+                        onPress={this.handleNavigationCadastrarAnimal}>
+                        <View style={styles.addButton}>
+                            <MaterialIcons   
+                                name="add"
+                                size={32}/>
+                        </View>    
+                    </TouchableOpacity>
+                </View>
                 <View style={{marginBottom: 90}}></View>
             </View>
         );  

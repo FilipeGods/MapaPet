@@ -85,7 +85,18 @@ module.exports = {
         } catch (err){
             throw(err);
         }
+    
+    },
 
+    async delete (req, res) {
+        const {id_animal} = req.params;
+        console.log(id_animal);
+
+        await connection('markers').where('fk_id_animal', id_animal).del();
+
+        await connection('animals').where('id_animal', id_animal).delete();
+        
+        return res.json(true);
     }
 
 }

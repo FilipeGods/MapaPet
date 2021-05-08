@@ -5,7 +5,8 @@ function CupertinoButtonInfo({disabled, ...props}) {
   return (
     <TouchableOpacity 
       style={!disabled ? styles.containerDesativado : styles.containerAtivado}
-      disabled={!disabled}>
+      disabled={!disabled}
+      onPress={props.onPress}>
       <Text style={styles.caption}>{props.caption || "Button"}</Text>
     </TouchableOpacity>
   );

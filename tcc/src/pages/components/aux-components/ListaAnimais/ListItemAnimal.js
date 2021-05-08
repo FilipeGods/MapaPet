@@ -5,18 +5,23 @@ import {
   Text, 
   ImageBackground, 
   Switch, 
+  Alert,
   TouchableOpacity } from "react-native";
+import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import MaterialSwitch from "./MaterialSwitch";
 import CupertinoButtonInfo from "./CupertinoButtonInfo";
 import api from '../../../../services/api';
 import {images} from '../../../../assets/index';
 
 
-function ListItemAnimal({animal}, ...props) {
+function ListItemAnimal(props) {
+  let animal = props.animal;
 
   let isAnimalPerdido = animal.isPerdido ? true : false;
   const id_animal  = animal.id_animal;
   const [isEnabled, setIsEnabled] = useState();
+  const navigation = useNavigation();
 
   // console.log('============')
   // console.log('Animal: ' + animal.name)
@@ -50,10 +55,43 @@ console.log('animal.picture: ',animal.picture !== null)
     setIsEnabled(previousState => !previousState);
   }
 
+  function deletarAnimal(animalId){
+    if(animalId){
+      api.delete('deleteAnimal/' + animalId)
+        .then(props.handleRefresh())
+        .catch((err) => {
+            alert('Erro ao deletar animal:' + err);
+        });
+    }
+  }
+
   return (
     <View style={[styles.container, props.style]}>
       <View style={styles.rect}>
-        <Text style={styles.nomeDoAnimal}>{animal.name}</Text>
+        <View style={{justifyContent:'space-between', flexDirection:'row'}}>
+          <Text style={styles.nomeDoAnimal}>{animal.name}</Text>
+          <TouchableOpacity
+              style={{paddingTop:20, paddingEnd:30}}
+              onPress= {() => {
+                  Alert.alert(
+                  //title
+                  'Remover Animal',
+                  //body
+                  'Tem certeza que deseja excluir este animal?',
+                  [
+                      {text: 'Sim', onPress: () => deletarAnimal(animal.id_animal)},
+                      {text: 'Não', onPress: () => console.log('No Pressed')}
+                  ],
+                  { cancelable: true }
+                  )
+              }}>
+              <Ionicons
+                  name='trash'
+                  size={32}
+                  color='red'>
+              </Ionicons>
+          </TouchableOpacity>
+        </View>
         <View
           style={styles.loremIpsumRow}>
             <Text style={styles.loremIpsum}>Declarar como perdido</Text>
@@ -80,6 +118,7 @@ console.log('animal.picture: ',animal.picture !== null)
         <CupertinoButtonInfo
           caption="Declarar ponto no mapa"
           disabled={isEnabled}
+          onPress={() => navigation.navigate('Mapa')}
         ></CupertinoButtonInfo>
       </View>
     </View>

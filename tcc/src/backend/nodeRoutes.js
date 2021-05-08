@@ -26,6 +26,9 @@ routes.get('/animals', animalController.index);
 //Rota -> Registra novo animal
 routes.post('/animals', animalController.create);
 
+//Rota -> Deletar animal
+routes.delete('/deleteAnimal/:id_animal', animalController.delete);
+
 //Rota -> Recupera animais do dono
 routes.post('/getMyAnimals', animalController.getMyAnimals);
 

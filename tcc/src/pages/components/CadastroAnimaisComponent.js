@@ -2,6 +2,8 @@ import React, { Component, useEffect, useState } from "react";
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground, Alert } from "react-native";
 import { RadioButton } from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 let USUARIO = require('../../services/globalUserController.json'); 
 import api from '../../services/api';
@@ -21,18 +23,34 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
     image = pictureContent;
   
     const [showImage, setShowImage] = useState(false)
+    const [showImageFile, setShowImageFile] = useState(false)
+
+    const [name, setName] = useState('');
+    const [specie, setSpecie] = useState('');
+    const [specieRadioValue, setSpecieRadioValue] = useState('');
+    const [race, setRace] = useState('');
+    const [size, setSize] = useState('');
+    const [description, setDescription] = useState('');
+    const [isPerido, setIsperido] = useState('');
+    //const [hasPermission, setHasPermission] = useState(null);
+
+    const [isPictureTaken, setIsPictureTaken] = useState(false);
+    const [picture, setPicture] = useState('');
+    const [imageFile, setImageFile] = useState('');
+
+    const navigation = useNavigation();
 
     React.useEffect(
       () => navigation.addListener('focus', () => {
           console.log('CadastroAnimaisComponent')  
           console.log('pictureContent: ',image)
 
-
           image = { uri: pictureContent };
           console.log('entrando...')
           // console.log('image: ',image) 
           if(USUARIO.lastPage === 'Camera'){
             setShowImage(true);
+            setShowImageFile(false)
             console.log('showImage: ', showImage)
             console.log('registro anterior')  
           } else {
@@ -50,45 +68,26 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
       () => navigation.addListener('blur', () => {
           console.log('saindo...')
           USUARIO.lastPage = "CadastrarAnimal"
-          setName("");
+          setName('');
           setSpecie("");
           setSpecieRadioValue("");
           setRace("");
           setSize("");
           setDescription("");
+          setShowImage(false);
+          setShowImageFile(false);
       }),
       []
     );
 
-    const [name, setName] = useState('');
-    const [specie, setSpecie] = useState('');
-    const [specieRadioValue, setSpecieRadioValue] = useState('');
-    const [race, setRace] = useState('');
-    const [size, setSize] = useState('');
-    const [description, setDescription] = useState('');
-    const [isPerido, setIsperido] = useState('');
-
-    const [isPictureTaken, setIsPictureTaken] = useState(false);
-    const [picture, setPicture] = useState('');
-
-    const navigation = useNavigation();
-    
-    function funcaoTeste() {
-      console.log('funcao chamada')
-      console.log(name)
-      console.log(cellphone)
-      console.log(email)
-      console.log(password)
-    }
-
     async function handleCreateAnimal(e) {
         if(name && specie) {
-          if(showImage){
+          if(showImage || showImageFile){
             registrarAnimal();
           } else {
             Alert.alert(
               'Foto', //título
-              'Uma foto é essencial para a identificação do seu animal, ' + // mesnagem
+              'Uma foto é essencial para a identificação do seu animal, ' + // mensagem
               'se possível nos forneça uma.',
               [
                 {
@@ -107,12 +106,21 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
      }
     function registrarAnimal(){
       let fk_id_user = USUARIO.id_user;
+      let finalPicture;
+      if(showImage){
+        console.log('Enviar foto camera')
+        finalPicture = pictureContent;
+      } else if (showImageFile) {
+        console.log('Enviar foto arquivo')
+        finalPicture = imageFile;
+      }
+
       api.post('animals', {
           name,
           specie,
           race,
           size,
-          picture: pictureContent,
+          picture: finalPicture,
           description,
           fk_id_user
       })
@@ -124,6 +132,30 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
       });
     }
 
+    async function handleUploadFile() {
+      const {status} = await Permissions.askAsync(Permissions.CAMERA); // Permissão para o uso da camera
+      console.log(status)
+      const hasPermission = status === 'granted';
+
+      if(hasPermission){
+          let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+        console.log(result);
+  
+        if (!result.cancelled) {
+          console.log(result.uri)
+          setImageFile(result.uri)
+          setShowImage(false)
+          setShowImageFile(true)
+        }
+      }
+
+
+    }
 
     function SpecieChange(value) {
         switch(value){
@@ -144,38 +176,63 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
     
 
   return (
-    <View style={[styles.container, props.style]}>
-      <View >
+    <View >
+      <View style={styles.container}>
       { /* =======================NOME========================== */}  
-        <MaterialUnderlineTextbox2
-          onChangeText={(name) => setName(name)}
-          value={name}
-          inputStyle="Placeholder"
-          inputStyle="Nome"
-          style={styles.inputNome}
-        ></MaterialUnderlineTextbox2>
+        <View style={styles.containerInput}>
+          <TextInput
+            onChangeText={(name) => setName(name)}
+            placeholder='Nome'
+            style={styles.inputNome}
+            secureTextEntry={false}
+            required={true}
+          ></TextInput>
+        </View>
       { /* =======================NOME========================== */}  
+      </View>
+
+      <View>
       { /* =======================FOTO========================== */}
-      <TouchableOpacity onPress={ () => {navigation.navigate('Camera')} }>
-        { !showImage &&
-          <View style={{marginTop: 30, height: 300, backgroundColor:'grey', justifyContent: 'center', alignItems: 'center'}}>
-            <View style={{}}>
-              <MaterialIcons   
-                  name="camera-alt"
-                  size={32}/>
+        <TouchableOpacity onPress={ () => {navigation.navigate('Camera')} }>
+          { !showImage && !showImageFile &&
+            <View style={{marginTop: 30, height: 300, backgroundColor:'grey', justifyContent: 'center', alignItems: 'center'}}>
+              <View style={{}}>
+                <MaterialIcons   
+                    name="camera-alt"
+                    size={32}/>
+              </View>
             </View>
-          </View>
-        }
-        { showImage && 
-          <View style={{marginTop: 30}}>
-            <ImageBackground 
-              source={{ uri: pictureContent }}
-              style={{height: 300}}>
-            </ImageBackground>
-          </View>
-        }
-      </TouchableOpacity>
+          }
+          { showImage && 
+            <View style={{marginTop: 30}}>
+              <ImageBackground 
+                source={{ uri: pictureContent }}
+                style={{height: 300}}>
+              </ImageBackground>
+            </View>
+          }
+          { showImageFile && 
+            <View style={{marginTop: 30}}>
+              <ImageBackground 
+                source={{ uri: imageFile }}
+                style={{height: 300}}>
+              </ImageBackground>
+            </View>
+          }
+        </TouchableOpacity>
       { /* =======================FOTO========================== */}
+      </View>
+
+      <View style={styles.container}>
+      { /* =======================ARQUIVO========================== */}
+        <View style={{justifyContent:'center', alignItems:'center', marginTop:10}}>
+            <MaterialButtonViolet1
+              onPress={handleUploadFile}
+              caption="Escolher foto Galeria"
+              style={[styles.buttonCadastrar, {width: 200}]}
+            ></MaterialButtonViolet1>
+        </View>
+      { /* =======================ARQUIVO========================== */}
       { /* =======================ESPECIE========================== */}  
         <View style={styles.containerRadioButton}>
             <Text style={{fontSize: 18, }}>Espécie:</Text>
@@ -208,13 +265,15 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
         }
         { /* =======================ESPECIE========================== */}
         { /* =======================RACA========================== */}
-        <MaterialUnderlineTextbox2
-          onChangeText={(race) => setRace(race)}
-          value={race}
-          inputStyle="Placeholder"
-          inputStyle="Raça"
-          style={styles.inputNome}
-        ></MaterialUnderlineTextbox2>
+        <View style={styles.containerInput}>
+          <TextInput
+            onChangeText={(race) => setRace(race)}
+            placeholder='Raça'
+            style={styles.inputNome}
+            secureTextEntry={false}
+            required={true}
+          ></TextInput>
+        </View>
         { /* =======================RACA========================== */}
         { /* =======================SIZE========================== */}
         <View style={styles.containerRadioButton}>
@@ -272,7 +331,26 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    paddingHorizontal:50
+  },
+  containerInput: {
+    borderBottomWidth: 1,
+    borderColor: "#D9D5DC",
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  inputNome: {
+    color: "black",
+    paddingRight: 5,
+    fontSize: 16,
+    alignSelf: "stretch",
+    flex: 1,
+    lineHeight: 16,
+    paddingTop: 16,
+    paddingBottom: 8
+  },
   rect: {
     width: 302,
     height: 449,
