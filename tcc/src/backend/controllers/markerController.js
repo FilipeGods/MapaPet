@@ -11,16 +11,39 @@ module.exports = {
 */
 
     async index (req, res) {
-        
-        const markers = await connection('markers').select('*')
-        
-        return res.json(markers);
+        let aMarkers = await connection('markers').select('*');
+
+        let aIdsAnimals = aMarkers.map((oMarker) => {
+            return oMarker.fk_id_animal;
+        });
+
+        let aIdsUsers = aMarkers.map((oMarker) => {
+            return oMarker.fk_id_user;
+        });
+
+        let aUsers = await connection('users').select('*').whereIn('id_user', aIdsUsers);
+
+        let aAnimals = await connection('animals').select('*').whereIn('id_animal', aIdsAnimals);
+
+        let aMarkerDTO = aMarkers.map((oMarker, sIndice) => {
+            oMarker.user = aUsers.find((oUser, sIndice) => {
+                return oUser.id_user === oMarker.fk_id_user;
+            });
+
+            oMarker.animal = aAnimals.find((oAnimal, sIndice) => {
+                return oAnimal.id_animal === oMarker.fk_id_animal;
+            });
+
+            return oMarker;
+        });
+
+        return res.json(aMarkers);
     },
 
     async create (req, res) {
         console.log(req.body);
-        const { latitude, longitude, street, description, fk_id_user } = req.body;
-        console.log('street: ' + street);
+        const { latitude, longitude, street, fk_id_user, fk_id_animal } = req.body;
+        console.log('fk_id_animal: ' + fk_id_animal);
         
         // const fk_ id_user = Usuário LOGADO
         const id_marker = crypto.randomBytes(4).toString('HEX');
@@ -29,7 +52,7 @@ module.exports = {
             latitude,
             longitude, 
             street,
-            description, 
+            fk_id_animal,
             fk_id_user
         })
     

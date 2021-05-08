@@ -17,6 +17,7 @@ import listaAnimais from './pages/homescreen/ListaAnimais';
 import listaAnimaisPerdidos from './pages/homescreen/ListaAnimaisPerdidos';
 import cadastroAnimais from './pages/homescreen/CadastroAnimais';
 import camera from './pages/homescreen/Camera';
+import mapa from './pages/maps/index'
 
 const Drawer = createDrawerNavigator();
 
@@ -51,6 +52,11 @@ const DrawerNavigator = () => {
       <Drawer.Screen 
         name="Camera"
         component={camera}
+        options={{}}
+      />
+      <Drawer.Screen 
+        name="Mapa"
+        component={mapa}
         options={{}}
       />
     </Drawer.Navigator>

@@ -35,9 +35,7 @@ export default class ListaAnimaisComponent extends React.Component {
     async atualizarRegistros(){
         try{
             const response = await api.post('getMyAnimals', { id_user })
-            console.log('response: ' + response.data) 
             
-            console.log(aAnimal_ids)
             this.state.animals = [];
             for (let i=0; i<response.data.length; i++) {
                 let oAnimal = response.data[i];
@@ -49,7 +47,6 @@ export default class ListaAnimaisComponent extends React.Component {
     }
 
     async handleSetState(oAnimal) {
-        console.log('teste 4' + oAnimal)
         this.setState({
             animals: [...this.state.animals, 
                 {
