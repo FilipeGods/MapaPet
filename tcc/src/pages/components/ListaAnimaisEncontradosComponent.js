@@ -14,7 +14,7 @@ let id_user;
 let aAnimal_ids = [];
 let isLoading;
 
-export default class ListaAnimaisComponent extends React.Component {
+export default class ListaAnimaisEncontradosComponent extends React.Component {
     
 
     constructor(props){
@@ -34,7 +34,7 @@ export default class ListaAnimaisComponent extends React.Component {
 
     async atualizarRegistros(){
         try{
-            const response = await api.post('getMyAnimals', { id_user })
+            const response = await api.post('getMyFoundAnimals', { id_user })
             
             this.state.animals = [];
             for (let i=0; i<response.data.length; i++) {
@@ -100,7 +100,7 @@ export default class ListaAnimaisComponent extends React.Component {
                     <TouchableOpacity
                         onPress={() => {
                             navigation.navigate('CadastrarAnimal')
-                            USUARIO.lastPage = "MeusAnimais"
+                            USUARIO.lastPage = "AnimaisEncontrados"
                         }}>
                         <View style={styles.addButton}>
                             <MaterialIcons   

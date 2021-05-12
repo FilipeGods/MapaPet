@@ -32,6 +32,7 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
     const [size, setSize] = useState('');
     const [description, setDescription] = useState('');
     const [isPerido, setIsperido] = useState('');
+    const [isMyAnimal, setIsMyAnimal] = useState('');
     //const [hasPermission, setHasPermission] = useState(null);
 
     const [isPictureTaken, setIsPictureTaken] = useState(false);
@@ -47,7 +48,7 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
 
           image = { uri: pictureContent };
           console.log('entrando...')
-          // console.log('image: ',image) 
+          console.log('lastPage: ', USUARIO.lastPage) 
           if(USUARIO.lastPage === 'Camera'){
             setShowImage(true);
             setShowImageFile(false)
@@ -59,7 +60,11 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
             console.log('showImage: ', showImage)
             console.log('novo registro')
           }
-            
+          
+          if (USUARIO.lastPage === 'MeusAnimais')
+            setIsMyAnimal(true)
+          else if (USUARIO.lastPage === 'AnimaisEncontrados')  
+            setIsMyAnimal(false)
       }),
       []
     );
@@ -122,10 +127,15 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
           size,
           picture: finalPicture,
           description,
+          isMyAnimal,
           fk_id_user
       })
       .then(() => {
-        navigation.navigate('listaAnimais');
+        if(isMyAnimal)
+          navigation.navigate('listaAnimais');
+        else 
+          navigation.navigate('listaAnimaisEncontrados');
+          
         alert('Cadastro realizado com sucesso!');
       }).catch(() => {
           alert('Erro no cadastro');

@@ -5,9 +5,9 @@ import { useNavigation } from '@react-navigation/native';
  
 //COMPONENTS
 import MainHeader from '../components/MainHeader';
-import ListaAnimaisComponent from '../components/ListaAnimaisComponent';
+import ListaAnimaisEncontradosComponent from '../components/ListaAnimaisEncontradosComponent';
 
-export default function listaAnimais({navigation}) {
+export default function listaAnimaisEncontrados({navigation}) {
 
     //const navigation = useNavigation();
 
@@ -21,7 +21,10 @@ export default function listaAnimais({navigation}) {
 
     return (
         <View style={styles.container}>
-            <ListaAnimaisComponent navigation={navigation} style={styles.ListaAnimaisComponent}></ListaAnimaisComponent>
+            <ListaAnimaisEncontradosComponent 
+                navigation={navigation} 
+                style={styles.ListaAnimaisComponent}>
+            </ListaAnimaisEncontradosComponent>
         </View>
         );
 }

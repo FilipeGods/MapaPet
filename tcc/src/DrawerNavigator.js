@@ -15,6 +15,7 @@ import cadastro from './pages/homescreen/Cadastro';
 import menuPrincipal from './pages/homescreen/MenuPrincipal';
 import listaAnimais from './pages/homescreen/ListaAnimais';
 import listaAnimaisPerdidos from './pages/homescreen/ListaAnimaisPerdidos';
+import listaAnimaisEncontrados from './pages/homescreen/ListaAnimaisEncontrados';
 import cadastroAnimais from './pages/homescreen/CadastroAnimais';
 import camera from './pages/homescreen/Camera';
 import mapa from './pages/maps/index'
@@ -27,9 +28,13 @@ const DrawerNavigator = () => {
       /* insira aqui código para filtragem dos itens */
     >
       <Drawer.Screen 
-        name="login" 
+        name="Menu Principal" 
+        component={menuPrincipal} 
+        options={headerMenuPrincipal}/>
+      <Drawer.Screen 
+        name="MenuPrincipal" 
         component={login} 
-        options={headerLogin}/>
+        options={headerLogin}/>  
       <Drawer.Screen 
         name="cadastro" 
         component={cadastro} 
@@ -43,6 +48,11 @@ const DrawerNavigator = () => {
         name="listaAnimaisPerdidos"
         component={listaAnimaisPerdidos}
         options={headerListaAnimaisPerdidos}
+      />
+      <Drawer.Screen 
+        name="listaAnimaisEncontrados"
+        component={listaAnimaisEncontrados}
+        options={headerListaAnimaisEncontrados}
       />
       <Drawer.Screen 
         name="CadastrarAnimal"
@@ -125,6 +135,19 @@ const headerNoButtonNoGesture = {
 
 //CONFIGURAÇÕES ESPECIFICAS
 
+const headerMenuPrincipal = {
+  drawerLabel: 'Menu Principal',
+  title: 'Menu Principal',
+  headerShown: true,
+  headerStyle: {backgroundColor: "rgba(94,53,177,1)", },
+  headerTitleStyle: {
+    color: "rgba(255,255,255,1)",
+    fontSize: 26,
+  },
+  headerTitleAlign: 'center',
+  headerTintColor: 'white'
+}
+
 const headerLogin = {
   headerLeft: () => {},
   swipeEnabled: false,
@@ -155,6 +178,19 @@ const headerListaAnimais = {
 const headerListaAnimaisPerdidos = {
   drawerLabel: 'Animais Perdidos',
   title: 'Animais Perdidos',
+  headerShown: true,
+  headerStyle: {backgroundColor: "rgba(94,53,177,1)", },
+  headerTitleStyle: {
+    color: "rgba(255,255,255,1)",
+    fontSize: 26,
+  },
+  headerTitleAlign: 'center',
+  headerTintColor: 'white'
+}
+
+const headerListaAnimaisEncontrados = {
+  drawerLabel: 'Animais Encontrados',
+  title: 'Animais Encontrados',
   headerShown: true,
   headerStyle: {backgroundColor: "rgba(94,53,177,1)", },
   headerTitleStyle: {

@@ -18,6 +18,17 @@ module.exports = {
         return res.json(animals);
     },
 
+    async getMyFoundAnimals (req, res){
+        const { id_user } = req.body;
+
+        const animals = await connection('animals')
+                                 .select('*').where({ fk_id_user: id_user,
+                                                        isMyAnimal: false
+                                                    })
+                                       
+        return res.json(animals);
+    },
+
     async getLostAnimals (req, res){
         const animals = await connection('animals')
                                  .select('*').where('isPerdido', true)
@@ -64,7 +75,7 @@ module.exports = {
     async create (req, res){
         try{
             const { name, specie, race, size, picture, description, fk_id_user } = req.body;
-            console.log({ name, specie, size, picture, description, fk_id_user })
+            console.log({ name, specie, size, picture, description, isMyAnimal, fk_id_user })
             const isPerdido = false;
     
             const id_animal = crypto.randomBytes(4).toString('HEX');
@@ -78,6 +89,7 @@ module.exports = {
                 picture,
                 description,
                 isPerdido,
+                isMyAnimal,
                 fk_id_user
             })
         

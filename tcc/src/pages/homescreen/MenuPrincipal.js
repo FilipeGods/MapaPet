@@ -1,45 +1,68 @@
-import React, { Component, useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { Component, useEffect, useState,  } from 'react';
+import { 
+    View, 
+    StyleSheet, 
+    ScrollView, 
+    Text,
+    TouchableOpacity
+} from 'react-native';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { createAppContainer } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import api from '../../services/api';
+import { color } from 'react-native-reanimated';
 
-//import { LoginScreen, CadastroScreen } from '../components/aux-components/MenuEsquerda/itensMenuEsquerda'
- 
-//COMPONENTS
-import MainHeader from '../components/MainHeader';
-import MenuHeader from '../components/MenuHeader'
-import CadastroComponent from '../components/CadastroComponent';
-
-export default function Cadastro() { 
-
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const navigation = useNavigation();
-    
-async function handleCreateUser(e) {
-    console.log('chamei o cadastro');
-        api.post('users', {
-            name,
-            email,
-            password
-        }).then(() => {
-            alert('Cadastro realizado com sucesso!');
-        }).catch(() => {
-            alert('Erro no cadastro');
-        });
-    }
+export default function MenuPrincipal() { 
 
     return (
-        <View style={styles.container}>
-              <MenuHeader 
-                title="MenuPrincipal"
-                style={styles.MainHeader}>
-              </MenuHeader>
-              
-        </View>
+        <ScrollView>
+            {/* =========================Animais=========================== */}
+            <View style={[styles.outterContainer, {backgroundColor: "#26c6da"}]}>
+                <Text style={[styles.title, {alignSelf:'center'}]}>Animais</Text>
+
+                <View style={{flexDirection:'row'}}>
+                    <TouchableOpacity style={[styles.innerContainer, {backgroundColor: "#6ff9ff"}]}>
+                        <Text style={styles.option}>Meus</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.infoButton}>
+                        <Ionicons name='information-circle' size={40}/>
+                    </TouchableOpacity>
+                </View>
+                
+                <View style={{flexDirection:'row'}}>
+                    <TouchableOpacity style={[styles.innerContainer, {backgroundColor: "#6ff9ff"}]}>
+                        <Text style={styles.option}>Perdidos</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.infoButton}>
+                        <Ionicons name='information-circle' size={40}/>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{flexDirection:'row'}}>
+                    <TouchableOpacity style={[styles.innerContainer, {backgroundColor: "#6ff9ff"}]}>
+                        <Text style={styles.option}>Encontrei</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.infoButton}>
+                        <Ionicons name='information-circle' size={40}/>
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+            {/* =========================Mapa=========================== */}
+            <View style={[styles.outterContainer, {backgroundColor: "#263238"}]}>
+                <Text style={[styles.title, {alignSelf:'center', color:'#ffffff'}]}>Mapa</Text>
+
+                <View style={{flexDirection:'row'}}>
+                    <TouchableOpacity style={[styles.innerContainer, {backgroundColor: "#651fff"}]}>
+                        <Text style={[styles.option, {color:'#ffffff'}]}>visualizar</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.infoButton}>
+                        <Ionicons color='#ffffff' name='information-circle' size={40}/>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </ScrollView>
     );
 }
 
@@ -50,11 +73,37 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%'
     },
-    MainHeader: {
-        flex: 1
+    outterContainer:{
+        marginTop:10,
+        marginBottom:5,
+        borderRadius: 15,
+        padding: 16,
+        marginHorizontal: 12,
+        shadowColor: "#000",
+        shadowOffset: {
+        width: 0,
+        height: 1
+        },
+        shadowOpacity: 0.35,
+        shadowRadius: 5,
+        elevation: 2,
     },
-    cadastroComponent: {
-        flex: 5,
-        alignSelf: 'center'
+    innerContainer:{
+        marginTop:3,
+        marginBottom:3,
+        borderRadius: 15,
+        padding: 16,
+        width:'90%'
+    },
+    infoButton:{
+        alignSelf:'center',
+
+    },
+    title: {
+        fontSize: 30
+    },
+    option:{
+        alignSelf:'center', 
+        fontSize: 20
     }
   });

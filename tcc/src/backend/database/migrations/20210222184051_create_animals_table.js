@@ -8,7 +8,7 @@ exports.up = function(knex) {
         table.string('picture', 255);
         table.string('description', 255);
         table.boolean('isPerdido');
-        table.boolean('isAdocao');
+        table.boolean('isMyAnimal');
         table.string('fk_id_user').unsigned().notNullable();
         table.foreign('fk_id_user').references('id_user').inTable('users');
         table.timestamps(true, true);
