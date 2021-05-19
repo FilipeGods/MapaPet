@@ -32,7 +32,16 @@ routes.delete('/deleteAnimal/:id_animal', animalController.delete);
 //Rota -> Recupera animais do dono
 routes.post('/getMyAnimals', animalController.getMyAnimals);
 
-//Rota -> Recupera animais perdidos (isPerdido === true)
+//Rota -> Recupera animais encontrados do dono
+routes.post('/getMyFoundAnimals', animalController.getMyFoundAnimals);
+
+//Rota -> Recupera animais encontrados 
+routes.get('/getFoundAnimals', animalController.getFoundAnimals);
+
+//Rota -> Recupera animal encontrado
+routes.post('/getFoundAnimal', animalController.getFoundAnimal);
+
+//Rota -> Recupera animal perdidos (isPerdido === true)
 routes.get('/getLostAnimals', animalController.getLostAnimals);
 
 //Rota -> Recupera animais perdidos (isPerdido === true)

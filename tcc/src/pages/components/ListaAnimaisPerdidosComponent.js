@@ -46,7 +46,7 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
             const response = await api.get('getLostAnimals')
             console.log('response: ' + response.data) 
             
-            this.state.animals = [];
+            this.setState({animals: []});
             for (let i=0; i<response.data.length; i++) {
                 let oAnimal = response.data[i];
                 this.handleSetState(oAnimal);
@@ -176,17 +176,17 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
                         </View>
                     }    
                 </View>
-                    <FlatList 
-                        progressViewOffset={5}
-                        data={this.state.animals}
-                        refreshing={this.state.refreshing}
-                        onRefresh={this.handleRefresh}
-                        renderItem={({item}) =>  
-                                <View>
-                                    <ListItemAnimalPerdidos animal={item}/>
-                                </View>
-                            }
-                    />
+                <FlatList 
+                    progressViewOffset={5}
+                    data={this.state.animals}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.handleRefresh}
+                    renderItem={({item}) =>  
+                            <View>
+                                <ListItemAnimalPerdidos animal={item}/>
+                            </View>
+                        }
+                />
                 <View style={{marginBottom: 90}}></View>
             </View>
         );  

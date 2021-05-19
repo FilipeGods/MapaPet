@@ -13,7 +13,9 @@ module.exports = {
         const { id_user } = req.body;
 
         const animals = await connection('animals')
-                                 .select('*').where('fk_id_user', id_user)
+                                 .select('*').where({ fk_id_user: id_user,
+                                                        isMyAnimal: true
+                                                    })
                                        
         return res.json(animals);
     },
@@ -25,7 +27,43 @@ module.exports = {
                                  .select('*').where({ fk_id_user: id_user,
                                                         isMyAnimal: false
                                                     })
+        
+        
+        console.log(animals)
+
+        return res.json(animals);
+    },
+
+    async getFoundAnimals (req, res){
+        const animals = await connection('animals')
+                                 .select('*').where('isMyAnimal', false)
                                        
+        return res.json(animals);
+    },
+
+    async getFoundAnimal (req, res){
+        console.log('getLostAnimal Acessado')
+        const {id_user, campoPesquisa} = req.body;
+        console.log(id_user)
+        console.log(campoPesquisa)
+        
+        console.log('Procurando por name')
+        let animals = await connection('animals')
+                                 .select('*').where({   fk_id_user: id_user,
+                                                        isMyAnimal: false,
+                                                        name: campoPesquisa
+                                                    })
+
+        if(animals.length === 0){
+            console.log('Procurando por ID')
+            animals = await connection('animals')
+                                 .select('*').where({   fk_id_user: id_user,
+                                                        isMyAnimal: false,
+                                                        id_animal: campoPesquisa
+                                                    })
+        }
+
+        console.log(animals)
         return res.json(animals);
     },
 
@@ -74,7 +112,7 @@ module.exports = {
 
     async create (req, res){
         try{
-            const { name, specie, race, size, picture, description, fk_id_user } = req.body;
+            const { name, specie, race, size, picture, description, isMyAnimal, fk_id_user } = req.body;
             console.log({ name, specie, size, picture, description, isMyAnimal, fk_id_user })
             const isPerdido = false;
     

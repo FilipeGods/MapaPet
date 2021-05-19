@@ -29,9 +29,11 @@ function LoginComponent(props) {
             password
         }).then((res) => {
             console.log('login sendo realizado')
+            console.log('id user resposta: ', res.data[0].id_user);
             //res.data[0].id_user
             USUARIO.id_user = res.data[0].id_user;
-            navigation.navigate('listaAnimaisPerdidos');
+            console.log('id user arquivo: ', USUARIO.id_user);
+            navigation.navigate('MenuPrincipal');
         }).catch((err) => {
             alert(err);
         });

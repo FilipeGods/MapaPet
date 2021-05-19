@@ -15,6 +15,7 @@ import cadastro from './pages/homescreen/Cadastro';
 import menuPrincipal from './pages/homescreen/MenuPrincipal';
 import listaAnimais from './pages/homescreen/ListaAnimais';
 import listaAnimaisPerdidos from './pages/homescreen/ListaAnimaisPerdidos';
+import listaAnimaisEncontrei from './pages/homescreen/ListaAnimaisEncontrei';
 import listaAnimaisEncontrados from './pages/homescreen/ListaAnimaisEncontrados';
 import cadastroAnimais from './pages/homescreen/CadastroAnimais';
 import camera from './pages/homescreen/Camera';
@@ -28,13 +29,13 @@ const DrawerNavigator = () => {
       /* insira aqui código para filtragem dos itens */
     >
       <Drawer.Screen 
-        name="Menu Principal" 
-        component={menuPrincipal} 
-        options={headerMenuPrincipal}/>
-      <Drawer.Screen 
-        name="MenuPrincipal" 
+        name="login" 
         component={login} 
         options={headerLogin}/>  
+      <Drawer.Screen 
+        name="MenuPrincipal" 
+        component={menuPrincipal} 
+        options={headerMenuPrincipal}/>
       <Drawer.Screen 
         name="cadastro" 
         component={cadastro} 
@@ -48,6 +49,11 @@ const DrawerNavigator = () => {
         name="listaAnimaisPerdidos"
         component={listaAnimaisPerdidos}
         options={headerListaAnimaisPerdidos}
+      />
+      <Drawer.Screen 
+        name="listaAnimaisEncontrei"
+        component={listaAnimaisEncontrei}
+        options={headerListaAnimaisEncontrei}
       />
       <Drawer.Screen 
         name="listaAnimaisEncontrados"
@@ -178,6 +184,19 @@ const headerListaAnimais = {
 const headerListaAnimaisPerdidos = {
   drawerLabel: 'Animais Perdidos',
   title: 'Animais Perdidos',
+  headerShown: true,
+  headerStyle: {backgroundColor: "rgba(94,53,177,1)", },
+  headerTitleStyle: {
+    color: "rgba(255,255,255,1)",
+    fontSize: 26,
+  },
+  headerTitleAlign: 'center',
+  headerTintColor: 'white'
+}
+
+const headerListaAnimaisEncontrei = {
+  drawerLabel: 'Encontrei',
+  title: 'Animais Encontrei',
   headerShown: true,
   headerStyle: {backgroundColor: "rgba(94,53,177,1)", },
   headerTitleStyle: {

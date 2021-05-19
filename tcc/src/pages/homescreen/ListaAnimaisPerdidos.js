@@ -6,7 +6,7 @@ import { View, StyleSheet } from 'react-native';
 import MainHeader from '../components/MainHeader';
 import ListaAnimaisPerdidosComponent from '../components/ListaAnimaisPerdidosComponent';
 
-export default function listaAnimais() {
+export default function listaAnimaisPerdidos() {
     return (
         <View style={styles.container}>
             <ListaAnimaisPerdidosComponent style={styles.ListaAnimaisComponent}></ListaAnimaisPerdidosComponent>

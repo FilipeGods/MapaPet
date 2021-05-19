@@ -46,6 +46,8 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
           console.log('CadastroAnimaisComponent')  
           console.log('pictureContent: ',image)
 
+          //resetaCampos();
+
           image = { uri: pictureContent };
           console.log('entrando...')
           console.log('lastPage: ', USUARIO.lastPage) 
@@ -63,7 +65,7 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
           
           if (USUARIO.lastPage === 'MeusAnimais')
             setIsMyAnimal(true)
-          else if (USUARIO.lastPage === 'AnimaisEncontrados')  
+          else if (USUARIO.lastPage === 'ListaEncontrei')  
             setIsMyAnimal(false)
       }),
       []
@@ -73,17 +75,21 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
       () => navigation.addListener('blur', () => {
           console.log('saindo...')
           USUARIO.lastPage = "CadastrarAnimal"
-          setName('');
-          setSpecie("");
-          setSpecieRadioValue("");
-          setRace("");
-          setSize("");
-          setDescription("");
-          setShowImage(false);
-          setShowImageFile(false);
+          resetaCampos();
       }),
       []
     );
+
+    function resetaCampos () {
+      setName(null);
+      setSpecie("");
+      setSpecieRadioValue("");
+      setRace("Vazio");
+      setSize("");
+      setDescription("");
+      setShowImage(false);
+      setShowImageFile(false);
+    }
 
     async function handleCreateAnimal(e) {
         if(name && specie) {
@@ -131,10 +137,7 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
           fk_id_user
       })
       .then(() => {
-        if(isMyAnimal)
-          navigation.navigate('listaAnimais');
-        else 
-          navigation.navigate('listaAnimaisEncontrados');
+        navigation.goBack();
           
         alert('Cadastro realizado com sucesso!');
       }).catch(() => {

@@ -1,5 +1,13 @@
 import React, { Component, useState } from 'react';
-import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
+import { 
+    ActivityIndicator,
+    StyleSheet, 
+    View, 
+    FlatList, 
+    RefreshControl, 
+    Input, 
+    TouchableOpacity,
+    TextInput } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
@@ -7,36 +15,38 @@ import api from '../../services/api';
 let USUARIO = require('../../services/globalUserController.json');
 
 //componentes
-import ListItemAnimal from './aux-components/ListaAnimais/ListItemAnimal';
-
+import ListItemAnimalPerdidos from './aux-components/ListaAnimaisPerdidos/ListItemAnimalPerdidos';
 
 let id_user;
 let aAnimal_ids = [];
 let isLoading;
 
 export default class ListaAnimaisEncontradosComponent extends React.Component {
-    
-
     constructor(props){
         super(props)
 
         this.state = {
             animals: [],
             refreshing: false,
+            campoPesquisa: '',
+            isLoading: false
         }
     }
 
     async componentDidMount(){
         id_user = USUARIO.id_user;
+        isLoading = false;
+        console.log('id_user: '+id_user)
         aAnimal_ids = [];
         this.atualizarRegistros();
     }
 
     async atualizarRegistros(){
         try{
-            const response = await api.post('getMyFoundAnimals', { id_user })
+            const response = await api.get('getFoundAnimals')
+            console.log('response: ' + response.data) 
             
-            this.state.animals = [];
+            this.setState({animals: []});
             for (let i=0; i<response.data.length; i++) {
                 let oAnimal = response.data[i];
                 this.handleSetState(oAnimal);
@@ -47,68 +57,136 @@ export default class ListaAnimaisEncontradosComponent extends React.Component {
     }
 
     async handleSetState(oAnimal) {
-        this.setState({
-            animals: [...this.state.animals, 
-                {
-                    key: oAnimal.id_animal,
-                    id_animal: oAnimal.id_animal,
-                    specie: oAnimal.specie,
-                    name: oAnimal.name,
-                    race:  oAnimal.race,
-                    size: oAnimal.size,
-                    picture: oAnimal.picture,
-                    description: oAnimal.description,
-                    isPerdido: oAnimal.isPerdido,
-                    fk_id_user: oAnimal.fk_id_user,
-                    fk_id_marker: oAnimal.fk_id_marker,
-                    created_at: oAnimal.created_at,
-                    updated_at: oAnimal.updated_at
-                }
-            ] 
-        });
-    }
+        isLoading = true;
+        console.log('teste 4' + oAnimal)
 
-    funcaoTeste = () => {
-        console.log('isso é um teste')
+        try {
+            const response = await api.post('user', { id_user })
+            console.log('user response: ' + response.data[1]) 
+            
+            let oUser = response.data[0];
+            this.setState({
+                animals: [...this.state.animals, 
+                    {
+                        key: oAnimal.id_animal,
+                        id_animal: oAnimal.id_animal,
+                        specie: oAnimal.specie,
+                        name: oAnimal.name,
+                        race:  oAnimal.race,
+                        size: oAnimal.size,
+                        picture: oAnimal.picture,
+                        description: oAnimal.description,
+                        isPerdido: oAnimal.isPerdido,
+                        fk_id_user: oAnimal.fk_id_user,
+                        fk_id_marker: oAnimal.fk_id_marker,
+                        created_at: oAnimal.created_at,
+                        updated_at: oAnimal.updated_at,
+                        user: {
+                            key: oUser.id_user,
+                            id_user: oUser.id_user,
+                            name: oUser.name,
+                            email: oUser.email,
+                            cellphone:  oUser.cellphone,
+                            password: oUser.password
+                        }
+                    }
+                ] 
+            });
+        } catch (err) {
+            alert(err)
+        }
+        
     }
 
     handleRefresh = () => {
+        if(this.state.campoPesquisa)
+            this.handleSearchCampoPesquisa();
+        else
+            this.atualizarRegistros();
+    }
+
+    handleClearCampoPesquisa = () => {
+        console.log('limpando')
+        this.setState( {campoPesquisa: null} );
         this.atualizarRegistros();
     }
 
-    handleNavigationCadastrarAnimal = () => {
+    async handleSearchCampoPesquisa() {
+        let campoPesquisa = this.state.campoPesquisa;
+        console.log('teste: '+campoPesquisa)
+        try{
+            const response = await api.post('getFoundAnimal', {id_user, campoPesquisa} )
+
+            this.state.animals = [];
+            for (let i=0; i<response.data.length; i++) {
+                let oAnimal = response.data[i];
+                this.handleSetState(oAnimal);
+            }  
+        } catch (err) {
+            alert(err)
+        }
         
-        //this.props.navigation.navigate('CadastrarAnimal', {previusPage: 'ListaAnimais'})
+    }
+
+    isDisabled() {
+        let campoPesquisa = this.state.campoPesquisa;
+        console.log(campoPesquisa)
+        if(campoPesquisa) 
+            //console.log('true')
+            return false
+        else
+            //console.log('false')
+            return true 
     }
 
     render () {
-        const { navigation } = this.props;
-        
         return (
             <View style={{flex:1}}>
-                <FlatList 
-                    data={this.state.animals}
-                    refreshing={this.state.refreshing}
-                    onRefresh={this.handleRefresh}
-                    renderItem={({item}) => 
-                            <View>
-                                <ListItemAnimal animal={item} handleRefresh={this.handleRefresh}/>
-                            </View>
-                        }
-                />
-                <View style={styles.footer}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate('CadastrarAnimal')
-                            USUARIO.lastPage = "AnimaisEncontrados"
-                        }}>
-                        <View style={styles.addButton}>
-                            <MaterialIcons   
-                                name="add"
-                                size={32}/>
-                        </View>    
-                    </TouchableOpacity>
+                <View style={styles.header}>
+                    { (true) && //condição para ocultar elemente da tela
+                        <View>
+                            <TouchableOpacity
+                                onPress={() => this.handleSearchCampoPesquisa()}>
+                                <View>
+                                    <MaterialIcons   
+                                        name="search"
+                                        size={32}/>
+                                </View>    
+                            </TouchableOpacity>
+                        </View>
+                    }
+                    <TextInput 
+                        placeholder='Nome ou Código'
+                        style={styles.inputStyle}
+                        onChangeText={(campoPesquisa) => {this.setState({campoPesquisa})}}
+                        onSubmitEditing={() => this.handleSearchCampoPesquisa()}
+                        value={this.state.campoPesquisa}>
+                        </TextInput>
+                    { (true) && //condição para ocultar elemente da tela 
+                        <View>
+                            <TouchableOpacity
+                                activeOpacity={this.isDisabled() ? 1 : 0}>
+                                <MaterialIcons 
+                                    name='cancel'
+                                    size={32}
+                                    onPress={() => this.handleClearCampoPesquisa()}
+                                    disabled={this.isDisabled()}
+                                    color={this.isDisabled() ? 'grey' : 'black'}/>
+                            </TouchableOpacity> 
+                        </View>
+                    }    
                 </View>
+                    <FlatList 
+                        progressViewOffset={5}
+                        data={this.state.animals}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.handleRefresh}
+                        renderItem={({item}) =>  
+                                <View>
+                                    <ListItemAnimalPerdidos animal={item}/>
+                                </View>
+                            }
+                    />
                 <View style={{marginBottom: 90}}></View>
             </View>
         );  
@@ -117,13 +195,28 @@ export default class ListaAnimaisEncontradosComponent extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    header: {
+      borderBottomWidth: 1,
+      borderColor: "#D9D5DC",
+      backgroundColor: "transparent",
+      flexDirection: "row",
+      alignItems: "center"
+    },
     footer:{
       borderTopWidth:1,  
       borderColor: "#D9D5DC",
       backgroundColor: "transparent",
       alignItems: "center"
     },
-    addButton:{
-        marginTop:10
+    inputStyle: {
+      color: "#000",
+      paddingRight: 5,
+      fontSize: 20,
+      textAlign: 'center',
+      alignSelf: "center",
+      flex: 1,
+      lineHeight: 16,
+      paddingTop: 16,
+      paddingBottom: 8,
     }
-});
+  });

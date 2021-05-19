@@ -1,30 +1,13 @@
 import React, { Component, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
  
-//COMPONENTS
-import MainHeader from '../components/MainHeader';
 import ListaAnimaisEncontradosComponent from '../components/ListaAnimaisEncontradosComponent';
 
-export default function listaAnimaisEncontrados({navigation}) {
-
-    //const navigation = useNavigation();
-
-    React.useEffect(
-        () => navigation.addListener('focus', () => {
-              
-        }),
-        []
-      );
-
-
+export default function listaAnimaisEncontrados() {
     return (
         <View style={styles.container}>
-            <ListaAnimaisEncontradosComponent 
-                navigation={navigation} 
-                style={styles.ListaAnimaisComponent}>
-            </ListaAnimaisEncontradosComponent>
+            <ListaAnimaisEncontradosComponent style={styles.ListaAnimaisComponent}></ListaAnimaisEncontradosComponent>
         </View>
         );
 }
