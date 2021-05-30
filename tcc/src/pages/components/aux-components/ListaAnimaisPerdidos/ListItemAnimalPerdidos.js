@@ -16,6 +16,7 @@ function ListItemAnimalPerdidos({animal}, ...props) {
   let isAnimalPerdido = animal.isPerdido ? true : false;
   const id_animal  = animal.id_animal;
   const [isEnabled, setIsEnabled] = useState();
+  console.log('=========', animal)
 
   //é disparado toda vez que o componente é atualizado
   useEffect(() => {

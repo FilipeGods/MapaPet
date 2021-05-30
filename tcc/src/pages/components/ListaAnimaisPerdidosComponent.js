@@ -61,10 +61,10 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
         console.log('teste 4' + oAnimal)
 
         try {
-            const response = await api.post('user', { id_user })
-            console.log('user response: ' + response.data[1]) 
+            // const response = await api.post('user', { id_user })
+            // console.log('user response: ' + response.data[0]) 
             
-            let oUser = response.data[0];
+            // let oUser = response.data[0];
             this.setState({
                 animals: [...this.state.animals, 
                     {
@@ -82,12 +82,12 @@ export default class ListaAnimaisPerdidosComponent extends React.Component {
                         created_at: oAnimal.created_at,
                         updated_at: oAnimal.updated_at,
                         user: {
-                            key: oUser.id_user,
-                            id_user: oUser.id_user,
-                            name: oUser.name,
-                            email: oUser.email,
-                            cellphone:  oUser.cellphone,
-                            password: oUser.password
+                            key: oAnimal.user.id_user,
+                            id_user: oAnimal.user.id_user,
+                            name: oAnimal.user.name,
+                            email: oAnimal.user.email,
+                            cellphone:  oAnimal.user.cellphone,
+                            password: oAnimal.user.password
                         }
                     }
                 ] 

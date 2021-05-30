@@ -7,25 +7,32 @@ let USUARIO = require('../../services/globalUserController.json');
 import MainHeader from '../components/MainHeader';
 import ListaAnimaisEncontreiComponent from '../components/ListaAnimaisEncontreiComponent';
 
-let id_user;
+//let isVisible;
 export default function listaAnimaisEncontrei({navigation}) {
     
     //const navigation = useNavigation();
-    const [id_user, setId_user] = useState('');
+    const [isVisible, setIsVisible] = useState('');
     
     React.useEffect(
         () => navigation.addListener('focus', () => {
-            setId_user(USUARIO.id_user);
+            setIsVisible(true);
         }),
         []
-      );
+    );
+
+    React.useEffect(
+        () => navigation.addListener('blur', () => {
+            setIsVisible(false);
+        }),
+        []
+    );
 
 
     return (
         <View style={styles.container}>
             <ListaAnimaisEncontreiComponent 
                 navigation={navigation} 
-                id_user={id_user}
+                isVisible={isVisible}
                 style={styles.ListaAnimaisComponent}>
             </ListaAnimaisEncontreiComponent>
         </View>

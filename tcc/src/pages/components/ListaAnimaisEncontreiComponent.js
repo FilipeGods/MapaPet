@@ -14,11 +14,10 @@ import ListItemAnimalEncontrei from './aux-components/ListaAnimaisEncontrei/List
 let id_user;
 let aAnimal_ids = [];
 let isLoading;
-let isFocusing = 0;
+let isMounting;
 
 export default class ListaAnimaisEncontreiComponent extends React.Component {
     
-
     constructor(props){
         super(props)
         
@@ -33,28 +32,27 @@ export default class ListaAnimaisEncontreiComponent extends React.Component {
         aAnimal_ids = [];
         this.atualizarRegistros();
         const { navigation } = this.props;
-        
+        console.log('====montando')
     }
 
-    componentDidUpdate(prevProps){
-        // new Promise((resolve, reject) => {
-        //     isFocusing++;
-        //     this.atualizarRegistros();
-        // }).then(() => {
-        //     console.log('then 1')
-        //     isFocusing = 0;
-        // });
-        //this.atualizarRegistros()
-    }
+    componentDidUpdate(prevProps) {
+
+        const { navigation } = this.props;
+        this.focusListener = navigation.addListener('didFocus', () => {
+            console.log('focado')
+        });
+
+        // if (prevProps.isFocused !== this.props.isFocused) {
+        //   // Use the `this.props.isFocused` boolean
+        //   // Call any action
+        // }
+      }
 
     async atualizarRegistros(){
         try{
             id_user = USUARIO.id_user;
 
-            // if(isFocusing > 1) {
-            //     console.log('then 2')
-            //     return 'interrompido';
-            // }
+            isMounting = false;
 
             const response = await api.post('getMyFoundAnimals', { id_user })
             
@@ -107,8 +105,14 @@ export default class ListaAnimaisEncontreiComponent extends React.Component {
     
 
     render () {
-        const { navigation } = this.props;
+        const { navigation } = this.props;        
 
+        // console.log('isVisible: ', this.props.isVisible)
+
+        // if(!this.props.isVisible){
+        //     return null
+        // }
+        
         return (
             <View style={{flex:1}}>
                 <FlatList 
@@ -137,6 +141,7 @@ export default class ListaAnimaisEncontreiComponent extends React.Component {
                 <View style={{marginBottom: 90}}></View>
             </View>
         );  
+
     }
 
 }

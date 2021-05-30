@@ -511,7 +511,7 @@ export default class Mapa extends React.Component {
                             <Text style={stylesIn.text}>Nome: {markerSelecionado.user.name}</Text>
                             <Text style={stylesIn.text}>Celular: {markerSelecionado.user.cellphone}</Text>
                             <Text style={stylesIn.text}>E-mail: {markerSelecionado.user.email}</Text>
-                            <Text>{markerSelecionado.user.id_user === USUARIO.id_user ? 'true' : 'false'}</Text>
+                            {/* <Text>{markerSelecionado.user.id_user === USUARIO.id_user ? 'true' : 'false'}</Text> */}
                         </View>
                     </View>
                     <View style={stylesIn.buttonsContainer}>   

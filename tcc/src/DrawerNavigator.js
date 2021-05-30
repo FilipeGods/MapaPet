@@ -29,7 +29,7 @@ const DrawerNavigator = () => {
       /* insira aqui código para filtragem dos itens */
     >
       <Drawer.Screen 
-        name="login" 
+        name="Pet Finder" 
         component={login} 
         options={headerLogin}/>  
       <Drawer.Screen 

@@ -68,10 +68,28 @@ module.exports = {
     },
 
     async getLostAnimals (req, res){
-        const animals = await connection('animals')
+        let animals = await connection('animals')
                                  .select('*').where('isPerdido', true)
-                                       
-        return res.json(animals);
+
+        let aIdsUsers = animals.map((oAnimal, sIndice) => {
+            return oAnimal.fk_id_user;
+        });
+        console.log('aIdsUsers: ', aIdsUsers);
+
+        let aUsers = await connection('users').select('*').whereIn('id_user', aIdsUsers);
+        
+        let animalDTO = animals.map((oAnimal, sIndice) => {
+            oAnimal.user = aUsers.find((oUser, sIndice) => {
+                return oUser.id_user === oAnimal.fk_id_user;
+            });
+            console.log(`Animal ${sIndice}: ${oAnimal.user.id_user}`)
+
+            return oAnimal;
+        }); 
+        
+        console.log('res: ',animalDTO)
+                                    
+        return res.json(animalDTO);
     },
 
     async getLostAnimal (req, res){

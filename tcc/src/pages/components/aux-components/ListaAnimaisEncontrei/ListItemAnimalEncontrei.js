@@ -109,8 +109,9 @@ console.log('animal.picture: ',animal.picture !== null)
           }
         </View>
         <CupertinoButtonInfo
-          caption="Visualizar no Mapa"
+          caption="Declarar ponto no mapa"
           disabled={true}
+          onPress={() => navigation.navigate('Mapa')}
         ></CupertinoButtonInfo>
       </View>
     </View>
