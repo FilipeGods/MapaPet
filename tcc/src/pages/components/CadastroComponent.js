@@ -8,6 +8,7 @@ import MaterialUnderlineTextbox2 from "./aux-components/CadastroScreen/MaterialU
 import MaterialButtonViolet1 from "./aux-components/CadastroScreen/MaterialButtonViolet1";
 import MaterialButtonWithVioletText1 from "./aux-components/CadastroScreen/MaterialButtonWithVioletText1";
 import MaterialRightIconTextbox1 from "./aux-components/CadastroScreen/MaterialRightIconTextbox1"; 
+import TextInputMask from "./aux-components/general/TextInputMask"
 
 function CadastroComponent(props) {
 
@@ -26,19 +27,19 @@ function CadastroComponent(props) {
     }
 
     async function handleCreateUser(e) {
-        console.log('chamei o cadastro');
-            api.post('users', {
-                name,
-                cellphone,
-                email,
-                password
-            }).then(() => {
-                alert('Cadastro realizado com sucesso!');
-                navigation.navigate('login')
-            }).catch(() => {
-                alert('Erro no cadastro');
-            });
-        }
+      console.log('chamei o cadastro');
+          api.post('users', {
+              name,
+              cellphone,
+              email,
+              password
+          }).then(() => {
+              alert('Cadastro realizado com sucesso!');
+              navigation.navigate('MapaPet')
+          }).catch(() => {
+              alert('Erro no cadastro');
+          });
+    }
 
   return (
     <View style={[styles.container, props.style]}>
@@ -50,13 +51,19 @@ function CadastroComponent(props) {
           inputStyle="Nome"
           style={styles.inputNome}
         ></MaterialUnderlineTextbox2>
-        <MaterialUnderlineTextbox2
+        <TextInputMask
           onChangeText={(cellphone) => setcellphone(cellphone)}
           value={cellphone}
+          type='cel-phone'
+          options={{
+            maskType: 'BRL',
+            withDDD: true,
+            dddMask: '(99) '
+          }}
           inputStyle="Placeholder"
           inputStyle="celular"
           style={styles.inputCelular}
-        ></MaterialUnderlineTextbox2>
+        ></TextInputMask>
         <MaterialUnderlineTextbox2
           onChangeText={(email) => setEmail(email)}
           value={email}
@@ -79,7 +86,7 @@ function CadastroComponent(props) {
           ></MaterialButtonViolet1>
           <View style={styles.buttonCadastrarFiller}></View>
           <MaterialButtonWithVioletText1
-            onPress={() => navigation.navigate('login')}
+            onPress={() => navigation.navigate('MapaPet')}
             caption="BUTTON"
             caption="Voltar"
             style={styles.buttonVoltar}

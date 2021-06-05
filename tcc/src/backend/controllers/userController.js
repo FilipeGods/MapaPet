@@ -28,15 +28,11 @@ module.exports = {
         const { email, password } = req.body;
         let isLoginRight = false;
 
-        const user = await connection('users').select('*').where('email', email);
-
-        if(user.length){ // se User existe no banco
-            if (user[0].email === email && user[0].password === password){
-                isLoginRight = true;
-            }
-        }
-        
-        return res.json(user);
+        const user = await connection('users').select('*').where({email: email,
+                                                                  password: password
+                                                                });
+                
+        return res.status(200).json(user);
     },
 
     async create (req, res) {

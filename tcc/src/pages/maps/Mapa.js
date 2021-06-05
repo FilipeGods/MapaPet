@@ -565,7 +565,7 @@ export default class Mapa extends React.Component {
         const {latitude, longitude, latitudeDelta, longitudeDelta} = this.state; //localização do usuário
         if (latitude) {
             return(
-                <View style={styles.container}>  
+                <View style={{flex:1}}>  
                     <MapView
                         showsUserLocation={true}
                         initialRegion={{
@@ -576,7 +576,7 @@ export default class Mapa extends React.Component {
                         }}
                         showsBuildings={true}
                         showsTraffic={true}
-                        style={{flex:1, height:'100%', width:'100%'}}
+                        style={{flex:1}}
                         onLongPress={
                             (e, i=1) => this.setState(
                                 { 
@@ -606,16 +606,22 @@ export default class Mapa extends React.Component {
                                     </View>
                                     
                                 </Callout>
-                            </MapView.Marker>
+                            </MapView.Marker> 
                             )
                         )
                     }
-                        {/* <View>
-                            <Ionicons name="refresh-circle-sharp" size={32}/>
-                        </View> */}
                         
                     </MapView>
 
+                    <View style={stylesIn.refreshButton}>
+                        <TouchableOpacity
+                            style={{marginBottom:60}}
+                            onPress={() => {this.carregarMarkers()}}>
+                            <Ionicons  
+                                name="refresh-circle"
+                                size={60}/>
+                        </TouchableOpacity>
+                    </View>
                     {this.renderModalNewMarker()}
                     {this.renderModalInfo()}
                                     
@@ -633,6 +639,15 @@ export default class Mapa extends React.Component {
 }
 
 const stylesIn = StyleSheet.create({
+    map:{
+        ...StyleSheet.absoluteFillObject,
+    },
+    refreshButton:{
+        position:'absolute',
+        height:'100%',
+        width:'100%',
+        justifyContent:'flex-end',
+        alignItems:'center'},
     outterContainer:{
         marginTop:10,
         marginBottom:5,

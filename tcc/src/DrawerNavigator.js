@@ -27,7 +27,7 @@ const DrawerNavigator = () => {
   return (
     <Drawer.Navigator>
       <Drawer.Screen 
-        name="Login" 
+        name="MapaPet" 
         component={login} 
         options={headerLogin}/>  
       <Drawer.Screen 

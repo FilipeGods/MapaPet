@@ -73,7 +73,7 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
 
     React.useEffect(
       () => navigation.addListener('blur', () => {
-          console.log('saindo...')
+          //console.log('saindo...')
           USUARIO.lastPage = "CadastrarAnimal"
           resetaCampos();
       }),
@@ -81,10 +81,10 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
     );
 
     function resetaCampos () {
-      setName(null);
+      setName("");
       setSpecie("");
       setSpecieRadioValue("");
-      setRace("Vazio");
+      setRace("");
       setSize("");
       setDescription("");
       setShowImage(false);
@@ -193,12 +193,11 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
       <View style={styles.container}>
       { /* =======================NOME========================== */}  
         <View style={styles.containerInput}>
-          <TextInput
-            onChangeText={(name) => setName(name)}
-            placeholder='Nome'
-            style={styles.inputNome}
-            secureTextEntry={false}
-            required={true}
+           <TextInput
+              onChangeText={(name) => setName(name)}
+              value={name}
+              placeholder="Nome"
+              style={styles.inputNome}
           ></TextInput>
         </View>
       { /* =======================NOME========================== */}  
@@ -280,11 +279,10 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
         { /* =======================RACA========================== */}
         <View style={styles.containerInput}>
           <TextInput
-            onChangeText={(race) => setRace(race)}
-            placeholder='Raça'
-            style={styles.inputNome}
-            secureTextEntry={false}
-            required={true}
+              onChangeText={(race) => setRace(race)}
+              value={race}
+              placeholder='Raça'
+              style={styles.inputNome}
           ></TextInput>
         </View>
         { /* =======================RACA========================== */}
@@ -318,7 +316,7 @@ function CadastroAnimaisComponent({ pictureContent, previusPage }, props) {
               multiline={true}
               numberOfLines={6}
               maxLength={255}
-              placeholder="Descrição"
+              placeholder={'Descrição \nEx.: Dócil, Agressivo, Atendende pelo nome, treinado, possui alguma doença...'}
               style={styles.inputDescription}
           ></TextInput>
         </View>

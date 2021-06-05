@@ -55,6 +55,11 @@ module.exports = {
             fk_id_animal,
             fk_id_user
         })
+        .then(async () => {
+            const response = await connection('animals')
+                                .where('id_animal', fk_id_animal)
+                                .update('isPerdido', true);
+        })
     
         return res.json({id_marker});
     },
