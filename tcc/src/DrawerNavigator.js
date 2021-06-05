@@ -25,11 +25,9 @@ const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   return (
-    <Drawer.Navigator
-      /* insira aqui código para filtragem dos itens */
-    >
+    <Drawer.Navigator>
       <Drawer.Screen 
-        name="Pet Finder" 
+        name="Login" 
         component={login} 
         options={headerLogin}/>  
       <Drawer.Screen 

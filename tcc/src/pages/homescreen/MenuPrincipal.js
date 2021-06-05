@@ -22,7 +22,7 @@ function handleInfoMeus () {
         //body
         'A lista de Meus Animais é utilizada para visualizar os animais que são... Ora, Seus! '+
         'Utilize essa lista para registrar seus animais, e caso esteja procurando por eles, você ' +
-        'pode declara-lós como perdidos, assim outros usuários poderam te ajudar a recuperá-lo!',
+        'pode declara-lós como perdidos, assim outros usuários poderão te ajudar a recuperá-lo!',
         [
             {text: 'Fechar', onPress: () => console.log('No Pressed')}
         ],

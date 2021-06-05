@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import { StyleSheet, View, TextInput } from "react-native";
+import TextInputMask from 'react-native-text-input-mask';
 
 function MaterialUnderlineTextbox({onChangeText, ...props}) {
+  console.log(props)
   return (
     <View style={[styles.container, props.style]}>
-      <TextInput
+      <TextInputMask
         onChangeText={onChangeText}
         placeholder={props.inputStyle || "Placeholder"}
         style={styles.inputStyle}
-      ></TextInput>
+      ></TextInputMask>
     </View>
   );
 }
